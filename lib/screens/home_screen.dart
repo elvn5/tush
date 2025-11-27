@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
@@ -8,8 +9,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
-      body: const Center(child: Text('Welcome Home!')),
+      appBar: AppBar(title: Text('home'.tr(context: context))),
+      body: Center(child: Text('welcome_home'.tr(context: context))),
     );
   }
 }

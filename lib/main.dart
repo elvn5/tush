@@ -1,18 +1,51 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_api/amplify_api.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'routes/app_router.dart';
 import 'amplifyconfiguration.dart';
 import 'injection.dart';
+import 'package:tush/core/presentation/theme/app_theme.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tush/core/presentation/bloc/theme_cubit.dart';
+
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:tush/features/auth/presentation/bloc/auth_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: HydratedStorageDirectory(
+      (await getApplicationDocumentsDirectory()).path,
+    ),
+  );
+
   configureDependencies();
   await _configureAmplify();
-  runApp(MyApp());
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ru')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => GetIt.I<ThemeCubit>()),
+          BlocProvider(
+            create: (context) =>
+                GetIt.I<AuthBloc>()..add(const AuthEvent.checkRequested()),
+          ),
+        ],
+        child: MyApp(),
+      ),
+    ),
+  );
 }
 
 Future<void> _configureAmplify() async {
@@ -36,18 +69,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      theme: FlexThemeData.light(
-        scheme: FlexScheme.indigo,
-        fontFamily: GoogleFonts.raleway().fontFamily,
-      ),
-      darkTheme: FlexThemeData.dark(
-        scheme: FlexScheme.indigo,
-        fontFamily: GoogleFonts.raleway().fontFamily,
-      ),
-      themeMode: ThemeMode.system,
-      routerConfig: _appRouter.config(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return BlocBuilder<ThemeCubit, ThemeMode>(
+          builder: (context, themeMode) {
+            return MaterialApp.router(
+              title: "Tush",
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: themeMode,
+              routerConfig: _appRouter.config(),
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -1,0 +1,19 @@
+{
+  "title": "Tush",
+  "sign_in": "Войти",
+  "sign_up": "Регистрация",
+  "email": "Электронная почта",
+  "password": "Пароль",
+  "enter_email": "Введите ваш email",
+  "enter_password": "Введите ваш пароль",
+  "welcome_back": "С возвращением",
+  "sign_in_continue": "Войдите, чтобы продолжить",
+  "no_account": "Нет аккаунта? Зарегистрируйтесь",
+  "create_account": "Создать аккаунт",
+  "sign_up_started": "Зарегистрируйтесь, чтобы начать",
+  "already_have_account": "Уже есть аккаунт? Войти",
+  "please_enter_email": "Пожалуйста, введите ваш email",
+  "please_enter_password": "Пожалуйста, введите ваш пароль",
+  "home": "Главная",
+  "welcome_home": "Добро пожаловать домой!"
+}

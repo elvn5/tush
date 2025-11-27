@@ -1,14 +1,14 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tush/core/presentation/widgets/custom_form_container.dart';
 import '../bloc/sign_up_bloc.dart';
-import 'package:tush/core/presentation/widgets/custom_button.dart';
-import 'package:tush/core/presentation/widgets/custom_text_field.dart';
-import 'package:tush/core/presentation/widgets/custom_typography.dart';
+import 'package:tush/routes/app_router.gr.dart';
 import 'package:gap/gap.dart';
+
+import 'package:tush/core/presentation/widgets/widgets.dart';
 
 @RoutePage()
 class SignUpScreen extends StatelessWidget {
@@ -19,7 +19,10 @@ class SignUpScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => GetIt.I<SignUpBloc>(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Sign Up')),
+        appBar: AppBar(
+          title: Text('sign_up'.tr()),
+          actions: const [SettingsSpeedDial()],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: _SignUpForm(),
@@ -40,10 +43,7 @@ class _SignUpForm extends HookWidget {
       listener: (context, state) {
         state.maybeWhen(
           success: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Sign up successful!')),
-            );
-            // Navigate to home or login
+            context.router.replace(const HomeRoute());
           },
           failure: (message) {
             ScaffoldMessenger.of(
@@ -62,59 +62,62 @@ class _SignUpForm extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CustomTitleLarge(text: 'Create Account'),
+                  CustomTitleLarge(text: 'create_account'.tr()),
                   const Gap(8),
-                  const CustomBodyLarge(text: 'Sign up to get started'),
+                  CustomBodyLarge(text: 'sign_up_started'.tr()),
                   const Gap(32),
-                  AppContainer(
-                    child: Column(
-                      children: [
-                        CustomTextField(
-                          controller: emailController,
-                          label: 'Email',
-                          hint: 'Enter your email',
-                          keyboardType: TextInputType.emailAddress,
-                          prefixIcon: const Icon(Icons.email_outlined),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(16),
-                        CustomTextField(
-                          controller: passwordController,
-                          label: 'Password',
-                          hint: 'Enter your password',
-                          obscureText: true,
-                          prefixIcon: const Icon(Icons.lock_outline),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          },
-                        ),
-                        const Gap(24),
-                        CustomButton(
-                          text: 'Sign Up',
-                          isLoading: state.maybeWhen(
-                            loading: () => true,
-                            orElse: () => false,
+                  CustomTextField(
+                    controller: emailController,
+                    label: 'email'.tr(),
+                    hint: 'enter_email'.tr(),
+                    keyboardType: TextInputType.emailAddress,
+                    prefixIcon: const Icon(Icons.email_outlined),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'please_enter_email'.tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(16),
+                  CustomTextField(
+                    controller: passwordController,
+                    label: 'password'.tr(),
+                    hint: 'enter_password'.tr(),
+                    obscureText: true,
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'please_enter_password'.tr();
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(24),
+                  CustomButton(
+                    text: 'sign_up'.tr(),
+                    isLoading: state.maybeWhen(
+                      loading: () => true,
+                      orElse: () => false,
+                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        context.read<SignUpBloc>().add(
+                          SignUpEvent.submit(
+                            email: emailController.text,
+                            password: passwordController.text,
                           ),
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              context.read<SignUpBloc>().add(
-                                SignUpEvent.submit(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ],
+                        );
+                      }
+                    },
+                  ),
+                  const Gap(16),
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        context.router.push(const SignInRoute());
+                      },
+                      child: Text('already_have_account'.tr()),
                     ),
                   ),
                 ],

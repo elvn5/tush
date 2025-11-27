@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/usecases/sign_in_use_case.dart';
+import 'auth_bloc.dart';
 
 part 'sign_in_bloc.freezed.dart';
 
@@ -24,12 +25,14 @@ abstract class SignInState with _$SignInState {
 @injectable
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final SignInUseCase _signInUseCase;
+  final AuthBloc _authBloc;
 
-  SignInBloc(this._signInUseCase) : super(const _Initial()) {
+  SignInBloc(this._signInUseCase, this._authBloc) : super(const _Initial()) {
     on<_Submit>((event, emit) async {
       emit(const _Loading());
       try {
         await _signInUseCase(email: event.email, password: event.password);
+        _authBloc.add(const AuthEvent.loginSuccess());
         emit(const _Success());
       } catch (e) {
         emit(_Failure(e.toString()));

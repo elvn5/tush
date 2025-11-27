@@ -1,0 +1,19 @@
+{
+  "title": "Tush",
+  "sign_in": "Sign In",
+  "sign_up": "Sign Up",
+  "email": "Email",
+  "password": "Password",
+  "enter_email": "Enter your email",
+  "enter_password": "Enter your password",
+  "welcome_back": "Welcome Back",
+  "sign_in_continue": "Sign in to continue",
+  "no_account": "Don't have an account? Sign Up",
+  "create_account": "Create Account",
+  "sign_up_started": "Sign up to get started",
+  "already_have_account": "Already have an account? Sign In",
+  "please_enter_email": "Please enter your email",
+  "please_enter_password": "Please enter your password",
+  "home": "Home",
+  "welcome_home": "Welcome Home!"
+}
