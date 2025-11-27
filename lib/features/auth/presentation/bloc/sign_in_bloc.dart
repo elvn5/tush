@@ -1,0 +1,39 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
+import '../../domain/usecases/sign_in_use_case.dart';
+
+part 'sign_in_bloc.freezed.dart';
+
+@freezed
+abstract class SignInEvent with _$SignInEvent {
+  const factory SignInEvent.submit({
+    required String email,
+    required String password,
+  }) = _Submit;
+}
+
+@freezed
+abstract class SignInState with _$SignInState {
+  const factory SignInState.initial() = _Initial;
+  const factory SignInState.loading() = _Loading;
+  const factory SignInState.success() = _Success;
+  const factory SignInState.failure(String message) = _Failure;
+}
+
+@injectable
+class SignInBloc extends Bloc<SignInEvent, SignInState> {
+  final SignInUseCase _signInUseCase;
+
+  SignInBloc(this._signInUseCase) : super(const _Initial()) {
+    on<_Submit>((event, emit) async {
+      emit(const _Loading());
+      try {
+        await _signInUseCase(email: event.email, password: event.password);
+        emit(const _Success());
+      } catch (e) {
+        emit(_Failure(e.toString()));
+      }
+    });
+  }
+}
