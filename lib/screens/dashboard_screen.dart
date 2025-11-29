@@ -1,8 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:tush/core/presentation/widgets/widgets.dart';
 import 'package:tush/routes/app_router.gr.dart';
 
 @RoutePage()
@@ -12,14 +10,13 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
-      routes: const [HomeRoute(), ProfileRoute()],
-      floatingActionButton: const SettingsSpeedDial(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      routes: const [HomeRoute(), ProfileRoute(), SettingsRoute()],
       bottomNavigationBuilder: (_, tabsRouter) {
         return BottomAppBar(
           shape: const CircularNotchedRectangle(),
           notchMargin: 8.0,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
                 icon: Icon(
@@ -33,7 +30,6 @@ class DashboardScreen extends StatelessWidget {
                 onPressed: () => tabsRouter.setActiveIndex(0),
                 tooltip: 'home'.tr(context: context),
               ),
-              const Gap(20),
               IconButton(
                 icon: Icon(
                   tabsRouter.activeIndex == 1
@@ -46,7 +42,18 @@ class DashboardScreen extends StatelessWidget {
                 onPressed: () => tabsRouter.setActiveIndex(1),
                 tooltip: 'profile'.tr(context: context),
               ),
-              const Spacer(),
+              IconButton(
+                icon: Icon(
+                  tabsRouter.activeIndex == 2
+                      ? Icons.settings
+                      : Icons.settings_outlined,
+                  color: tabsRouter.activeIndex == 2
+                      ? Theme.of(context).colorScheme.primary
+                      : null,
+                ),
+                onPressed: () => tabsRouter.setActiveIndex(2),
+                tooltip: 'settings'.tr(context: context),
+              ),
             ],
           ),
         );

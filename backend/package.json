@@ -1,0 +1,27 @@
+{
+  "name": "tush-backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "sst dev",
+    "deploy": "sst deploy",
+    "remove": "sst remove",
+    "console": "sst console",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "sst": "^3.0.0",
+    "aws-cdk-lib": "2.142.1",
+    "constructs": "10.3.0",
+    "typescript": "^5.4.5",
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^20.12.7",
+    "@types/aws-lambda": "^8.10.137",
+    "@types/uuid": "^9.0.8"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.577.0",
+    "@aws-sdk/lib-dynamodb": "^3.577.0",
+    "uuid": "^9.0.1"
+  }
+}

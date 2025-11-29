@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SignUpEvent {
 
- String get email; String get password;
+ String get email;
 /// Create a copy of SignUpEvent
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $SignUpEventCopyWith<SignUpEvent> get copyWith => _$SignUpEventCopyWithImpl<Sign
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignUpEvent&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignUpEvent&&(identical(other.email, email) || other.email == email));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,email,password);
+int get hashCode => Object.hash(runtimeType,email);
 
 @override
 String toString() {
-  return 'SignUpEvent(email: $email, password: $password)';
+  return 'SignUpEvent(email: $email)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $SignUpEventCopyWith<$Res>  {
   factory $SignUpEventCopyWith(SignUpEvent value, $Res Function(SignUpEvent) _then) = _$SignUpEventCopyWithImpl;
 @useResult
 $Res call({
- String email, String password
+ String email
 });
 
 
@@ -62,10 +62,9 @@ class _$SignUpEventCopyWithImpl<$Res>
 
 /// Create a copy of SignUpEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? email = null,Object? password = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? email = null,}) {
   return _then(_self.copyWith(
 email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -87,11 +86,12 @@ extension SignUpEventPatterns on SignUpEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Submit value)?  submit,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Submit value)?  submit,TResult Function( _Confirm value)?  confirm,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Submit() when submit != null:
-return submit(_that);case _:
+return submit(_that);case _Confirm() when confirm != null:
+return confirm(_that);case _:
   return orElse();
 
 }
@@ -109,11 +109,12 @@ return submit(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Submit value)  submit,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Submit value)  submit,required TResult Function( _Confirm value)  confirm,}){
 final _that = this;
 switch (_that) {
 case _Submit():
-return submit(_that);case _:
+return submit(_that);case _Confirm():
+return confirm(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -130,11 +131,12 @@ return submit(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Submit value)?  submit,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Submit value)?  submit,TResult? Function( _Confirm value)?  confirm,}){
 final _that = this;
 switch (_that) {
 case _Submit() when submit != null:
-return submit(_that);case _:
+return submit(_that);case _Confirm() when confirm != null:
+return confirm(_that);case _:
   return null;
 
 }
@@ -151,10 +153,11 @@ return submit(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password)?  submit,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password)?  submit,TResult Function( String email,  String code)?  confirm,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Submit() when submit != null:
-return submit(_that.email,_that.password);case _:
+return submit(_that.email,_that.password);case _Confirm() when confirm != null:
+return confirm(_that.email,_that.code);case _:
   return orElse();
 
 }
@@ -172,10 +175,11 @@ return submit(_that.email,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password)  submit,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password)  submit,required TResult Function( String email,  String code)  confirm,}) {final _that = this;
 switch (_that) {
 case _Submit():
-return submit(_that.email,_that.password);case _:
+return submit(_that.email,_that.password);case _Confirm():
+return confirm(_that.email,_that.code);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -192,10 +196,11 @@ return submit(_that.email,_that.password);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password)?  submit,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password)?  submit,TResult? Function( String email,  String code)?  confirm,}) {final _that = this;
 switch (_that) {
 case _Submit() when submit != null:
-return submit(_that.email,_that.password);case _:
+return submit(_that.email,_that.password);case _Confirm() when confirm != null:
+return confirm(_that.email,_that.code);case _:
   return null;
 
 }
@@ -211,7 +216,7 @@ class _Submit implements SignUpEvent {
   
 
 @override final  String email;
-@override final  String password;
+ final  String password;
 
 /// Create a copy of SignUpEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -272,6 +277,74 @@ as String,
 }
 
 /// @nodoc
+
+
+class _Confirm implements SignUpEvent {
+  const _Confirm({required this.email, required this.code});
+  
+
+@override final  String email;
+ final  String code;
+
+/// Create a copy of SignUpEvent
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ConfirmCopyWith<_Confirm> get copyWith => __$ConfirmCopyWithImpl<_Confirm>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Confirm&&(identical(other.email, email) || other.email == email)&&(identical(other.code, code) || other.code == code));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,email,code);
+
+@override
+String toString() {
+  return 'SignUpEvent.confirm(email: $email, code: $code)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ConfirmCopyWith<$Res> implements $SignUpEventCopyWith<$Res> {
+  factory _$ConfirmCopyWith(_Confirm value, $Res Function(_Confirm) _then) = __$ConfirmCopyWithImpl;
+@override @useResult
+$Res call({
+ String email, String code
+});
+
+
+
+
+}
+/// @nodoc
+class __$ConfirmCopyWithImpl<$Res>
+    implements _$ConfirmCopyWith<$Res> {
+  __$ConfirmCopyWithImpl(this._self, this._then);
+
+  final _Confirm _self;
+  final $Res Function(_Confirm) _then;
+
+/// Create a copy of SignUpEvent
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? email = null,Object? code = null,}) {
+  return _then(_Confirm(
+email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$SignUpState {
 
 
@@ -315,13 +388,14 @@ extension SignUpStatePatterns on SignUpState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _Failure value)?  failure,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _ConfirmSuccess value)?  confirmSuccess,TResult Function( _Failure value)?  failure,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Success() when success != null:
-return success(_that);case _Failure() when failure != null:
+return success(_that);case _ConfirmSuccess() when confirmSuccess != null:
+return confirmSuccess(_that);case _Failure() when failure != null:
 return failure(_that);case _:
   return orElse();
 
@@ -340,13 +414,14 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _Failure value)  failure,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _ConfirmSuccess value)  confirmSuccess,required TResult Function( _Failure value)  failure,}){
 final _that = this;
 switch (_that) {
 case _Initial():
 return initial(_that);case _Loading():
 return loading(_that);case _Success():
-return success(_that);case _Failure():
+return success(_that);case _ConfirmSuccess():
+return confirmSuccess(_that);case _Failure():
 return failure(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -364,13 +439,14 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _Failure value)?  failure,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _ConfirmSuccess value)?  confirmSuccess,TResult? Function( _Failure value)?  failure,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Success() when success != null:
-return success(_that);case _Failure() when failure != null:
+return success(_that);case _ConfirmSuccess() when confirmSuccess != null:
+return confirmSuccess(_that);case _Failure() when failure != null:
 return failure(_that);case _:
   return null;
 
@@ -388,12 +464,13 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function()?  confirmSuccess,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Success() when success != null:
-return success();case _Failure() when failure != null:
+return success();case _ConfirmSuccess() when confirmSuccess != null:
+return confirmSuccess();case _Failure() when failure != null:
 return failure(_that.message);case _:
   return orElse();
 
@@ -412,12 +489,13 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( String message)  failure,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function()  confirmSuccess,required TResult Function( String message)  failure,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case _Success():
-return success();case _Failure():
+return success();case _ConfirmSuccess():
+return confirmSuccess();case _Failure():
 return failure(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -435,12 +513,13 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( String message)?  failure,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function()?  confirmSuccess,TResult? Function( String message)?  failure,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Success() when success != null:
-return success();case _Failure() when failure != null:
+return success();case _ConfirmSuccess() when confirmSuccess != null:
+return confirmSuccess();case _Failure() when failure != null:
 return failure(_that.message);case _:
   return null;
 
@@ -537,6 +616,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'SignUpState.success()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _ConfirmSuccess implements SignUpState {
+  const _ConfirmSuccess();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ConfirmSuccess);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'SignUpState.confirmSuccess()';
 }
 
 

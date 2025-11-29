@@ -189,3 +189,11 @@ When generating code, always verify imports. If a class relies on freezed or aut
 7. Theme
 
 Use colors only from Theme
+
+8. Naming
+
+If you create some custom widgets or code use prefix App insteaf of Custom
+
+9. Translations
+
+If you write text always add corresponding translation

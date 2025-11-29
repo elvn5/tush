@@ -1,22 +1,23 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-tush-dev-6c8e4-authRole",
-      "UnauthRoleArn": "arn:aws:iam::442426890752:role/amplify-tush-dev-6c8e4-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::442426890752:role/amplify-tush-dev-6c8e4-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-tush-dev-6c8e4-deployment",
-      "UnauthRoleName": "amplify-tush-dev-6c8e4-unauthRole",
-      "StackName": "amplify-tush-dev-6c8e4",
-      "StackId": "arn:aws:cloudformation:us-east-1:442426890752:stack/amplify-tush-dev-6c8e4/3102fb20-cb70-11f0-bc7e-0affcfcff881",
-      "AmplifyAppId": "d3pl253sa5wavx"
+      "AuthRoleName": "amplify-tush-dev-f4468-authRole",
+      "UnauthRoleArn": "arn:aws:iam::442426890752:role/amplify-tush-dev-f4468-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::442426890752:role/amplify-tush-dev-f4468-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-tush-dev-f4468-deployment",
+      "UnauthRoleName": "amplify-tush-dev-f4468-unauthRole",
+      "StackName": "amplify-tush-dev-f4468",
+      "StackId": "arn:aws:cloudformation:eu-north-1:442426890752:stack/amplify-tush-dev-f4468/78ce4880-cc45-11f0-a075-0a839b4c52db",
+      "AmplifyAppId": "d3ukzum6chbl07"
     },
     "categories": {
+      "auth": {
+        "tush84adb5b9": {},
+        "tushbf81d616": {}
+      },
       "api": {
         "tush": {}
-      },
-      "auth": {
-        "tushbb9fa3ed": {}
       }
     }
   }

@@ -10,6 +10,7 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
     AutoRoute(page: SignInRoute.page),
     AutoRoute(page: SignUpRoute.page),
+    AutoRoute(page: ConfirmationRoute.page),
     AutoRoute(
       page: DashboardRoute.page,
       initial: true,
@@ -17,6 +18,7 @@ class AppRouter extends RootStackRouter {
       children: [
         AutoRoute(page: HomeRoute.page),
         AutoRoute(page: ProfileRoute.page),
+        AutoRoute(page: SettingsRoute.page),
       ],
     ),
   ];

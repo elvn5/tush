@@ -21,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          CustomTitleLarge(
+          AppTitleLarge(
             text: 'language'.tr(context: context),
           ), // Ensure 'language' key exists
           const Gap(10),
@@ -49,7 +49,7 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const Gap(20),
-          CustomTitleLarge(
+          AppTitleLarge(
             text: 'theme'.tr(context: context),
           ), // Ensure 'theme' key exists
           const Gap(10),

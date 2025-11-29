@@ -2,11 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tush/routes/app_router.gr.dart';
 import 'package:gap/gap.dart';
 import '../bloc/sign_in_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:tush/core/presentation/widgets/widgets.dart';
 
@@ -19,10 +22,7 @@ class SignInScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => GetIt.I<SignInBloc>(),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('sign_in'.tr()),
-          actions: const [SettingsSpeedDial()],
-        ),
+        appBar: AppBar(title: Text('sign_in'.tr())),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: _SignInForm(),
@@ -35,9 +35,7 @@ class SignInScreen extends StatelessWidget {
 class _SignInForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final emailController = useTextEditingController();
-    final passwordController = useTextEditingController();
-    final formKey = useMemoized(() => GlobalKey<FormState>());
+    final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
 
     return BlocConsumer<SignInBloc, SignInState>(
       listener: (context, state) {
@@ -50,64 +48,83 @@ class _SignInForm extends HookWidget {
               context,
             ).showSnackBar(SnackBar(content: Text(message)));
           },
+          userNotConfirmed: () {
+            Fluttertoast.showToast(
+              msg: 'account_not_confirmed'.tr(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+            final email =
+                formKey.currentState?.fields['email']?.value as String?;
+            if (email != null) {
+              context.router.push(ConfirmationRoute(email: email));
+            }
+          },
           orElse: () {},
         );
       },
       builder: (context, state) {
         return Center(
           child: SingleChildScrollView(
-            child: Form(
+            child: FormBuilder(
               key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomTitleLarge(text: 'welcome_back'.tr()),
+                  AppTitleLarge(text: 'welcome_back'.tr()),
                   const Gap(8),
-                  CustomBodyLarge(text: 'sign_in_continue'.tr()),
+                  AppBodyLarge(text: 'sign_in_continue'.tr()),
                   const Gap(32),
-                  CustomTextField(
-                    controller: emailController,
+                  AppFormBuilderTextField(
+                    name: 'email',
                     label: 'email'.tr(),
                     hint: 'enter_email'.tr(),
-                    keyboardType: TextInputType.emailAddress,
                     prefixIcon: const Icon(Icons.email_outlined),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'please_enter_email'.tr();
-                      }
-                      return null;
-                    },
+                    keyboardType: TextInputType.emailAddress,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(
+                        errorText: 'please_enter_email'.tr(),
+                      ),
+                      FormBuilderValidators.email(
+                        errorText: 'please_enter_valid_email'.tr(),
+                      ),
+                    ]),
                   ),
                   const Gap(16),
-                  CustomTextField(
-                    controller: passwordController,
+                  AppFormBuilderTextField(
+                    name: 'password',
                     label: 'password'.tr(),
                     hint: 'enter_password'.tr(),
-                    obscureText: true,
                     prefixIcon: const Icon(Icons.lock_outline),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'please_enter_password'.tr();
-                      }
-                      return null;
-                    },
+                    obscureText: true,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(
+                        errorText: 'please_enter_password'.tr(),
+                      ),
+                    ]),
                   ),
                   const Gap(24),
-                  CustomButton(
+                  AppButton(
                     text: 'sign_in'.tr(),
                     isLoading: state.maybeWhen(
                       loading: () => true,
                       orElse: () => false,
                     ),
                     onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        context.read<SignInBloc>().add(
-                          SignInEvent.submit(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          ),
-                        );
+                      if (formKey.currentState?.saveAndValidate() ?? false) {
+                        final values = formKey.currentState?.value;
+                        if (values != null) {
+                          context.read<SignInBloc>().add(
+                            SignInEvent.submit(
+                              email: values['email'],
+                              password: values['password'],
+                            ),
+                          );
+                        }
                       }
                     },
                   ),

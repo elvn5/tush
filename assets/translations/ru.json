@@ -13,7 +13,16 @@
   "sign_up_started": "Зарегистрируйтесь, чтобы начать",
   "already_have_account": "Уже есть аккаунт? Войти",
   "please_enter_email": "Пожалуйста, введите ваш email",
+  "please_enter_valid_email": "Пожалуйста, введите корректный email",
   "please_enter_password": "Пожалуйста, введите ваш пароль",
   "home": "Главная",
-  "welcome_home": "Добро пожаловать домой!"
+  "welcome_home": "Добро пожаловать домой!",
+  "settings": "Настройки",
+  "language": "Язык",
+  "theme": "Тема",
+  "profile": "Профиль",
+  "account_not_confirmed": "Аккаунт не подтвержден. Пожалуйста, проверьте вашу почту.",
+  "confirm_sign_up_title": "Подтверждение регистрации",
+  "enter_code_instruction": "Введите код, отправленный на {}",
+  "confirm": "Подтвердить"
 }

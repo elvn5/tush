@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tush/core/presentation/bloc/theme_cubit.dart';
 
+import 'dart:async';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tush/features/auth/presentation/bloc/auth_bloc.dart';
@@ -84,11 +85,29 @@ class MyApp extends StatelessWidget {
               theme: AppTheme.light,
               darkTheme: AppTheme.dark,
               themeMode: themeMode,
-              routerConfig: _appRouter.config(),
+              routerConfig: _appRouter.config(
+                reevaluateListenable: StreamListenable(
+                  GetIt.I<AuthBloc>().stream,
+                ),
+              ),
             );
           },
         );
       },
     );
+  }
+}
+
+class StreamListenable extends ChangeNotifier {
+  late final StreamSubscription _subscription;
+
+  StreamListenable(Stream stream) {
+    _subscription = stream.listen((_) => notifyListeners());
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
   }
 }

@@ -13,7 +13,16 @@
   "sign_up_started": "Sign up to get started",
   "already_have_account": "Already have an account? Sign In",
   "please_enter_email": "Please enter your email",
+  "please_enter_valid_email": "Please enter a valid email",
   "please_enter_password": "Please enter your password",
   "home": "Home",
-  "welcome_home": "Welcome Home!"
+  "welcome_home": "Welcome Home!",
+  "settings": "Settings",
+  "language": "Language",
+  "theme": "Theme",
+  "profile": "Profile",
+  "account_not_confirmed": "Account not confirmed. Please check your email for the code.",
+  "confirm_sign_up_title": "Confirm Sign Up",
+  "enter_code_instruction": "Enter the code sent to {}",
+  "confirm": "Confirm"
 }
