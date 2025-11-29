@@ -16,10 +16,25 @@ export default $config({
         dreamId: "string",
       },
       primaryIndex: { hashKey: "userId", rangeKey: "dreamId" },
+      stream: "new-and-old-images",
+    });
+
+    table.subscribe({
+      handler: "src/interpret.handler",
+      link: [table],
     });
 
     // 2. Create Cognito User Pool
-    const userPool = new sst.aws.CognitoUserPool("UserPool");
+    const userPool = new sst.aws.CognitoUserPool("UserPool", {
+      transform: {
+        userPool: {
+          autoVerifiedAttributes: ["email"],
+          emailConfiguration: {
+            emailSendingAccount: "COGNITO_DEFAULT",
+          },
+        },
+      },
+    });
     const client = userPool.addClient("Web", {
       transform: {
         client: {
@@ -29,7 +44,7 @@ export default $config({
       },
     });
 
-    // 3. Create API Gateway V2
+    // 5. Create API Gateway V2
     const api = new sst.aws.ApiGatewayV2("Api", {
       transform: {
         route: {
@@ -48,7 +63,7 @@ export default $config({
       },
     });
 
-    // 4. Add Routes
+    // 6. Add Routes
     api.route("POST /dreams", "src/create.handler", {
       auth: {
         jwt: {
@@ -81,7 +96,7 @@ export default $config({
       },
     });
 
-    // 5. Outputs
+    // 7. Outputs
     return {
       ApiEndpoint: api.url,
       UserPoolId: userPool.id,

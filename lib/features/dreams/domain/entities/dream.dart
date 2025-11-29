@@ -1,17 +1,20 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:equatable/equatable.dart';
 
-// Domain entity for a Dream
+class Dream extends Equatable {
+  final String id;
+  final String title;
+  final String text;
+  final bool isReady;
+  final DateTime? createdAt;
 
-part 'dream.freezed.dart';
-part 'dream.g.dart';
+  const Dream({
+    required this.id,
+    required this.title,
+    required this.text,
+    required this.isReady,
+    this.createdAt,
+  });
 
-@freezed
-abstract class Dream with _$Dream {
-  const factory Dream({
-    required String id,
-    required String text,
-    required DateTime createdAt,
-  }) = _Dream;
-
-  factory Dream.fromJson(Map<String, dynamic> json) => _$DreamFromJson(json);
+  @override
+  List<Object?> get props => [id, title, text, isReady, createdAt];
 }

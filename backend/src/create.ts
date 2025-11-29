@@ -18,6 +18,8 @@ export const handler = async (event: any) => {
       dreamId: dreamId,
       title: data.title,
       dream: data.dream,
+      interpretation: "",
+      isReady: false,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     },

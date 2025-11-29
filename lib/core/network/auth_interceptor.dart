@@ -12,9 +12,13 @@ class AuthInterceptor extends Interceptor {
   ) async {
     try {
       final session = await Amplify.Auth.fetchAuthSession();
+      safePrint('Auth Session isSignedIn: ${session.isSignedIn}');
       if (session is CognitoAuthSession) {
         final idToken = session.userPoolTokensResult.value.idToken.raw;
+        safePrint('Attaching Auth Token: ${idToken.substring(0, 10)}...');
         options.headers['Authorization'] = 'Bearer $idToken';
+      } else {
+        safePrint('Session is not CognitoAuthSession');
       }
     } catch (e) {
       safePrint('Error fetching auth session: $e');

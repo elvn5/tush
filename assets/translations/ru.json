@@ -24,5 +24,20 @@
   "account_not_confirmed": "Аккаунт не подтвержден. Пожалуйста, проверьте вашу почту.",
   "confirm_sign_up_title": "Подтверждение регистрации",
   "enter_code_instruction": "Введите код, отправленный на {}",
-  "confirm": "Подтвердить"
+  "confirm": "Подтвердить",
+  "password_changed_successfully": "Пароль успешно изменен",
+  "no_name": "Без имени",
+  "change_password": "Сменить пароль",
+  "logout": "Выйти",
+  "old_password": "Старый пароль",
+  "new_password": "Новый пароль",
+  "cancel": "Отмена",
+  "change": "Изменить",
+  "your_dream": "Ваш сон",
+  "describe_your_dream": "Опишите ваш сон...",
+  "save_dream": "Сохранить сон",
+  "dream_saved_success": "Сон успешно сохранен!",
+  "new_dream": "Новый сон",
+  "no_dreams_yet": "Снов пока нет",
+  "processing": "Обработка..."
 }

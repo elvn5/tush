@@ -24,5 +24,20 @@
   "account_not_confirmed": "Account not confirmed. Please check your email for the code.",
   "confirm_sign_up_title": "Confirm Sign Up",
   "enter_code_instruction": "Enter the code sent to {}",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "password_changed_successfully": "Password changed successfully",
+  "no_name": "No Name",
+  "change_password": "Change Password",
+  "logout": "Logout",
+  "old_password": "Old Password",
+  "new_password": "New Password",
+  "cancel": "Cancel",
+  "change": "Change",
+  "your_dream": "Your Dream",
+  "describe_your_dream": "Describe your dream...",
+  "save_dream": "Save Dream",
+  "dream_saved_success": "Dream saved successfully!",
+  "new_dream": "New Dream",
+  "no_dreams_yet": "No dreams yet",
+  "processing": "Processing..."
 }

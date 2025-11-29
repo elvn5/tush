@@ -14,61 +14,30 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DreamsEvent {
 
- String get text;
-/// Create a copy of DreamsEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$DreamsEventCopyWith<DreamsEvent> get copyWith => _$DreamsEventCopyWithImpl<DreamsEvent>(this as DreamsEvent, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DreamsEvent&&(identical(other.text, text) || other.text == text));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DreamsEvent);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,text);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'DreamsEvent(text: $text)';
+  return 'DreamsEvent()';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $DreamsEventCopyWith<$Res>  {
-  factory $DreamsEventCopyWith(DreamsEvent value, $Res Function(DreamsEvent) _then) = _$DreamsEventCopyWithImpl;
-@useResult
-$Res call({
- String text
-});
-
-
-
-
-}
-/// @nodoc
-class _$DreamsEventCopyWithImpl<$Res>
-    implements $DreamsEventCopyWith<$Res> {
-  _$DreamsEventCopyWithImpl(this._self, this._then);
-
-  final DreamsEvent _self;
-  final $Res Function(DreamsEvent) _then;
-
-/// Create a copy of DreamsEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? text = null,}) {
-  return _then(_self.copyWith(
-text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
+class $DreamsEventCopyWith<$Res>  {
+$DreamsEventCopyWith(DreamsEvent _, $Res Function(DreamsEvent) __);
 }
 
 
@@ -86,11 +55,12 @@ extension DreamsEventPatterns on DreamsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Add value)?  add,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Add value)?  add,TResult Function( _Load value)?  load,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Add() when add != null:
-return add(_that);case _:
+return add(_that);case _Load() when load != null:
+return load(_that);case _:
   return orElse();
 
 }
@@ -108,11 +78,12 @@ return add(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Add value)  add,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Add value)  add,required TResult Function( _Load value)  load,}){
 final _that = this;
 switch (_that) {
 case _Add():
-return add(_that);case _:
+return add(_that);case _Load():
+return load(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -129,11 +100,12 @@ return add(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Add value)?  add,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Add value)?  add,TResult? Function( _Load value)?  load,}){
 final _that = this;
 switch (_that) {
 case _Add() when add != null:
-return add(_that);case _:
+return add(_that);case _Load() when load != null:
+return load(_that);case _:
   return null;
 
 }
@@ -150,10 +122,11 @@ return add(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String text)?  add,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String text)?  add,TResult Function()?  load,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Add() when add != null:
-return add(_that.text);case _:
+return add(_that.text);case _Load() when load != null:
+return load();case _:
   return orElse();
 
 }
@@ -171,10 +144,11 @@ return add(_that.text);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String text)  add,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String text)  add,required TResult Function()  load,}) {final _that = this;
 switch (_that) {
 case _Add():
-return add(_that.text);case _:
+return add(_that.text);case _Load():
+return load();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -191,10 +165,11 @@ return add(_that.text);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String text)?  add,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String text)?  add,TResult? Function()?  load,}) {final _that = this;
 switch (_that) {
 case _Add() when add != null:
-return add(_that.text);case _:
+return add(_that.text);case _Load() when load != null:
+return load();case _:
   return null;
 
 }
@@ -209,11 +184,11 @@ class _Add implements DreamsEvent {
   const _Add(this.text);
   
 
-@override final  String text;
+ final  String text;
 
 /// Create a copy of DreamsEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
+@JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$AddCopyWith<_Add> get copyWith => __$AddCopyWithImpl<_Add>(this, _$identity);
 
@@ -239,7 +214,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$AddCopyWith<$Res> implements $DreamsEventCopyWith<$Res> {
   factory _$AddCopyWith(_Add value, $Res Function(_Add) _then) = __$AddCopyWithImpl;
-@override @useResult
+@useResult
 $Res call({
  String text
 });
@@ -258,7 +233,7 @@ class __$AddCopyWithImpl<$Res>
 
 /// Create a copy of DreamsEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? text = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? text = null,}) {
   return _then(_Add(
 null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String,
@@ -267,6 +242,38 @@ as String,
 
 
 }
+
+/// @nodoc
+
+
+class _Load implements DreamsEvent {
+  const _Load();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Load);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'DreamsEvent.load()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 mixin _$DreamsState {
@@ -312,13 +319,14 @@ extension DreamsStatePatterns on DreamsState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _Failure value)?  failure,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _Loaded value)?  loaded,TResult Function( _Failure value)?  failure,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Success() when success != null:
-return success(_that);case _Failure() when failure != null:
+return success(_that);case _Loaded() when loaded != null:
+return loaded(_that);case _Failure() when failure != null:
 return failure(_that);case _:
   return orElse();
 
@@ -337,13 +345,14 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _Failure value)  failure,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _Loaded value)  loaded,required TResult Function( _Failure value)  failure,}){
 final _that = this;
 switch (_that) {
 case _Initial():
 return initial(_that);case _Loading():
 return loading(_that);case _Success():
-return success(_that);case _Failure():
+return success(_that);case _Loaded():
+return loaded(_that);case _Failure():
 return failure(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -361,13 +370,14 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _Failure value)?  failure,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Failure value)?  failure,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Success() when success != null:
-return success(_that);case _Failure() when failure != null:
+return success(_that);case _Loaded() when loaded != null:
+return loaded(_that);case _Failure() when failure != null:
 return failure(_that);case _:
   return null;
 
@@ -385,12 +395,13 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( List<Dream> dreams)?  loaded,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Success() when success != null:
-return success();case _Failure() when failure != null:
+return success();case _Loaded() when loaded != null:
+return loaded(_that.dreams);case _Failure() when failure != null:
 return failure(_that.message);case _:
   return orElse();
 
@@ -409,12 +420,13 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( String message)  failure,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( List<Dream> dreams)  loaded,required TResult Function( String message)  failure,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case _Success():
-return success();case _Failure():
+return success();case _Loaded():
+return loaded(_that.dreams);case _Failure():
 return failure(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -432,12 +444,13 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( String message)?  failure,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( List<Dream> dreams)?  loaded,TResult? Function( String message)?  failure,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Success() when success != null:
-return success();case _Failure() when failure != null:
+return success();case _Loaded() when loaded != null:
+return loaded(_that.dreams);case _Failure() when failure != null:
 return failure(_that.message);case _:
   return null;
 
@@ -541,6 +554,78 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _Loaded implements DreamsState {
+  const _Loaded(final  List<Dream> dreams): _dreams = dreams;
+  
+
+ final  List<Dream> _dreams;
+ List<Dream> get dreams {
+  if (_dreams is EqualUnmodifiableListView) return _dreams;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_dreams);
+}
+
+
+/// Create a copy of DreamsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LoadedCopyWith<_Loaded> get copyWith => __$LoadedCopyWithImpl<_Loaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&const DeepCollectionEquality().equals(other._dreams, _dreams));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_dreams));
+
+@override
+String toString() {
+  return 'DreamsState.loaded(dreams: $dreams)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$LoadedCopyWith<$Res> implements $DreamsStateCopyWith<$Res> {
+  factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) = __$LoadedCopyWithImpl;
+@useResult
+$Res call({
+ List<Dream> dreams
+});
+
+
+
+
+}
+/// @nodoc
+class __$LoadedCopyWithImpl<$Res>
+    implements _$LoadedCopyWith<$Res> {
+  __$LoadedCopyWithImpl(this._self, this._then);
+
+  final _Loaded _self;
+  final $Res Function(_Loaded) _then;
+
+/// Create a copy of DreamsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? dreams = null,}) {
+  return _then(_Loaded(
+null == dreams ? _self._dreams : dreams // ignore: cast_nullable_to_non_nullable
+as List<Dream>,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

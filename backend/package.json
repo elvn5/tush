@@ -7,21 +7,26 @@
     "deploy": "sst deploy",
     "remove": "sst remove",
     "console": "sst console",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "update-flutter-config": "tsx scripts/update-flutter-config.ts",
+    "postdeploy": "npm run update-flutter-config"
   },
   "devDependencies": {
-    "sst": "^3.0.0",
+    "@tsconfig/node20": "^20.1.4",
+    "@types/aws-lambda": "^8.10.137",
+    "@types/node": "^20.12.7",
+    "@types/uuid": "^9.0.8",
     "aws-cdk-lib": "2.142.1",
     "constructs": "10.3.0",
-    "typescript": "^5.4.5",
-    "@tsconfig/node20": "^20.1.4",
-    "@types/node": "^20.12.7",
-    "@types/aws-lambda": "^8.10.137",
-    "@types/uuid": "^9.0.8"
+    "sst": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.577.0",
     "@aws-sdk/lib-dynamodb": "^3.577.0",
+    "@google/generative-ai": "^0.24.1",
     "uuid": "^9.0.1"
   }
 }

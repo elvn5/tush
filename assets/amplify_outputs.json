@@ -1,0 +1,33 @@
+{
+  "version": "1",
+  "auth": {
+    "aws_region": "eu-north-1",
+    "user_pool_id": "eu-north-1_GylU93G7t",
+    "user_pool_client_id": "6048erjcfquaeiuu5lehaiel7r",
+    "username_attributes": [
+      "EMAIL"
+    ],
+    "standard_required_attributes": [
+      "EMAIL"
+    ],
+    "user_verification_types": [
+      "EMAIL"
+    ],
+    "mfa_configuration": "NONE",
+    "password_policy": {
+      "min_length": 8,
+      "require_lowercase": false,
+      "require_uppercase": false,
+      "require_numbers": false,
+      "require_symbols": false
+    }
+  },
+  "data": {
+    "aws_region": "eu-north-1",
+    "url": "https://vixpsaqvyf.execute-api.eu-north-1.amazonaws.com",
+    "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
+    "authorization_types": [
+      "AMAZON_COGNITO_USER_POOLS"
+    ]
+  }
+}
