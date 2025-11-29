@@ -1,49 +1,79 @@
+import { DynamoDBStreamHandler } from "aws-lambda";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb";
-import { DynamoDBStreamEvent } from "aws-lambda";
+import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Resource } from "sst";
 
 const client = new DynamoDBClient({});
 const dynamoDb = DynamoDBDocumentClient.from(client);
 
-const genAI = new GoogleGenerativeAI("AIzaSyD12KmZDQQTDlI_Yi9vOU--wTdD1e1x_DA");
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+// Initialize Gemini AI
+// Ensure GEMINI_API_KEY is set in your environment variables
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
-export const handler = async (event: DynamoDBStreamEvent) => {
+export const handler: DynamoDBStreamHandler = async (event) => {
+  console.log(`Processing ${event.Records.length} records`);
+
   for (const record of event.Records) {
-    if (record.eventName === "INSERT") {
-      const newImage = record.dynamodb?.NewImage;
-      if (newImage) {
-        const userId = newImage.userId.S;
-        const dreamId = newImage.dreamId.S;
-        const dreamText = newImage.dream.S;
-
-        if (userId && dreamId && dreamText) {
-          try {
-            const prompt = `Interpret this dream: ${dreamText}`;
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const interpretation = response.text();
-
-            // Update the dream in DynamoDB
-            await dynamoDb.send(
-              new UpdateCommand({
-                TableName: Resource.Dreams.name,
-                Key: { userId, dreamId },
-                UpdateExpression: "SET interpretation = :i, isReady = :r",
-                ExpressionAttributeValues: {
-                  ":i": interpretation,
-                  ":r": true,
-                },
-              })
-            );
-            console.log(`Interpreted dream ${dreamId} for user ${userId}`);
-          } catch (error) {
-            console.error(`Error interpreting dream ${dreamId}:`, error);
-          }
-        }
+    try {
+      if (record.eventName !== "INSERT") {
+        console.log(`Skipping event type: ${record.eventName}`);
+        continue;
       }
+
+      if (!record.dynamodb?.NewImage) {
+        console.log("No NewImage found in record");
+        continue;
+      }
+
+      // Unmarshall the DynamoDB record
+      const newImage = unmarshall(record.dynamodb.NewImage as any);
+      const { userId, dreamId, dream } = newImage;
+
+      if (!dream) {
+        console.log(
+          `No dream text found for user: ${userId}, dreamId: ${dreamId}`
+        );
+        continue;
+      }
+
+      console.log(
+        `Interpreting dream for user: ${userId}, dreamId: ${dreamId}`
+      );
+
+      // Call Gemini AI
+      const prompt =
+        "Ты толкователь снов. Дай краткую, мистическую, но полезную интерпретацию для этого сна";
+      const result = await model.generateContent([prompt, dream]);
+      const response = await result.response;
+      const interpretation = response.text();
+
+      // Update the record in DynamoDB
+      const updateParams = {
+        TableName: Resource.Dreams.name,
+        Key: {
+          userId: userId,
+          dreamId: dreamId,
+        },
+        UpdateExpression:
+          "SET interpretation = :i, isReady = :r, updatedAt = :u",
+        ExpressionAttributeValues: {
+          ":i": interpretation,
+          ":r": true,
+          ":u": Date.now(),
+        },
+      };
+
+      await dynamoDb.send(new UpdateCommand(updateParams));
+      console.log(`Successfully updated dream interpretation for ${dreamId}`);
+    } catch (error) {
+      console.error(
+        `Error processing record: ${JSON.stringify(record)}`,
+        error
+      );
+      // We continue to the next record so one failure doesn't stop the whole batch
     }
   }
 };

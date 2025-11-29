@@ -30,6 +30,30 @@ class DreamDetailScreen extends StatelessWidget {
               ),
             const SizedBox(height: 16),
             Text(dream.text, style: Theme.of(context).textTheme.bodyLarge),
+            if (dream.interpretation != null &&
+                dream.interpretation!.isNotEmpty) ...[
+              const SizedBox(height: 24),
+              Text(
+                'interpretation'.tr(),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  dream.interpretation!,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic),
+                ),
+              ),
+            ],
           ],
         ),
       ),

@@ -19,9 +19,12 @@ export default $config({
       stream: "new-and-old-images",
     });
 
-    table.subscribe({
+    table.subscribe("InterpretDream", {
       handler: "src/interpret.handler",
       link: [table],
+      environment: {
+        GEMINI_API_KEY: process.env.GEMINI_API_KEY || "",
+      },
     });
 
     // 2. Create Cognito User Pool

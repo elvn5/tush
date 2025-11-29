@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DreamDTO {
 
- String get dreamId; String get title;@JsonKey(name: 'dream') String get text; int? get createdAt; bool get isReady;
+ String get dreamId; String get title;@JsonKey(name: 'dream') String get text; String? get interpretation; int? get createdAt; bool get isReady;
 /// Create a copy of DreamDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DreamDTOCopyWith<DreamDTO> get copyWith => _$DreamDTOCopyWithImpl<DreamDTO>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DreamDTO&&(identical(other.dreamId, dreamId) || other.dreamId == dreamId)&&(identical(other.title, title) || other.title == title)&&(identical(other.text, text) || other.text == text)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isReady, isReady) || other.isReady == isReady));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DreamDTO&&(identical(other.dreamId, dreamId) || other.dreamId == dreamId)&&(identical(other.title, title) || other.title == title)&&(identical(other.text, text) || other.text == text)&&(identical(other.interpretation, interpretation) || other.interpretation == interpretation)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isReady, isReady) || other.isReady == isReady));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,dreamId,title,text,createdAt,isReady);
+int get hashCode => Object.hash(runtimeType,dreamId,title,text,interpretation,createdAt,isReady);
 
 @override
 String toString() {
-  return 'DreamDTO(dreamId: $dreamId, title: $title, text: $text, createdAt: $createdAt, isReady: $isReady)';
+  return 'DreamDTO(dreamId: $dreamId, title: $title, text: $text, interpretation: $interpretation, createdAt: $createdAt, isReady: $isReady)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $DreamDTOCopyWith<$Res>  {
   factory $DreamDTOCopyWith(DreamDTO value, $Res Function(DreamDTO) _then) = _$DreamDTOCopyWithImpl;
 @useResult
 $Res call({
- String dreamId, String title,@JsonKey(name: 'dream') String text, int? createdAt, bool isReady
+ String dreamId, String title,@JsonKey(name: 'dream') String text, String? interpretation, int? createdAt, bool isReady
 });
 
 
@@ -65,12 +65,13 @@ class _$DreamDTOCopyWithImpl<$Res>
 
 /// Create a copy of DreamDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? dreamId = null,Object? title = null,Object? text = null,Object? createdAt = freezed,Object? isReady = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? dreamId = null,Object? title = null,Object? text = null,Object? interpretation = freezed,Object? createdAt = freezed,Object? isReady = null,}) {
   return _then(_self.copyWith(
 dreamId: null == dreamId ? _self.dreamId : dreamId // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
-as String,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,interpretation: freezed == interpretation ? _self.interpretation : interpretation // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as int?,isReady: null == isReady ? _self.isReady : isReady // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String dreamId,  String title, @JsonKey(name: 'dream')  String text,  int? createdAt,  bool isReady)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String dreamId,  String title, @JsonKey(name: 'dream')  String text,  String? interpretation,  int? createdAt,  bool isReady)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DreamDTO() when $default != null:
-return $default(_that.dreamId,_that.title,_that.text,_that.createdAt,_that.isReady);case _:
+return $default(_that.dreamId,_that.title,_that.text,_that.interpretation,_that.createdAt,_that.isReady);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.dreamId,_that.title,_that.text,_that.createdAt,_that.isRea
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String dreamId,  String title, @JsonKey(name: 'dream')  String text,  int? createdAt,  bool isReady)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String dreamId,  String title, @JsonKey(name: 'dream')  String text,  String? interpretation,  int? createdAt,  bool isReady)  $default,) {final _that = this;
 switch (_that) {
 case _DreamDTO():
-return $default(_that.dreamId,_that.title,_that.text,_that.createdAt,_that.isReady);case _:
+return $default(_that.dreamId,_that.title,_that.text,_that.interpretation,_that.createdAt,_that.isReady);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.dreamId,_that.title,_that.text,_that.createdAt,_that.isRea
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String dreamId,  String title, @JsonKey(name: 'dream')  String text,  int? createdAt,  bool isReady)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String dreamId,  String title, @JsonKey(name: 'dream')  String text,  String? interpretation,  int? createdAt,  bool isReady)?  $default,) {final _that = this;
 switch (_that) {
 case _DreamDTO() when $default != null:
-return $default(_that.dreamId,_that.title,_that.text,_that.createdAt,_that.isReady);case _:
+return $default(_that.dreamId,_that.title,_that.text,_that.interpretation,_that.createdAt,_that.isReady);case _:
   return null;
 
 }
@@ -213,12 +214,13 @@ return $default(_that.dreamId,_that.title,_that.text,_that.createdAt,_that.isRea
 @JsonSerializable()
 
 class _DreamDTO extends DreamDTO {
-  const _DreamDTO({required this.dreamId, required this.title, @JsonKey(name: 'dream') required this.text, this.createdAt, this.isReady = false}): super._();
+  const _DreamDTO({required this.dreamId, required this.title, @JsonKey(name: 'dream') required this.text, this.interpretation, this.createdAt, this.isReady = false}): super._();
   factory _DreamDTO.fromJson(Map<String, dynamic> json) => _$DreamDTOFromJson(json);
 
 @override final  String dreamId;
 @override final  String title;
 @override@JsonKey(name: 'dream') final  String text;
+@override final  String? interpretation;
 @override final  int? createdAt;
 @override@JsonKey() final  bool isReady;
 
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DreamDTO&&(identical(other.dreamId, dreamId) || other.dreamId == dreamId)&&(identical(other.title, title) || other.title == title)&&(identical(other.text, text) || other.text == text)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isReady, isReady) || other.isReady == isReady));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DreamDTO&&(identical(other.dreamId, dreamId) || other.dreamId == dreamId)&&(identical(other.title, title) || other.title == title)&&(identical(other.text, text) || other.text == text)&&(identical(other.interpretation, interpretation) || other.interpretation == interpretation)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isReady, isReady) || other.isReady == isReady));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,dreamId,title,text,createdAt,isReady);
+int get hashCode => Object.hash(runtimeType,dreamId,title,text,interpretation,createdAt,isReady);
 
 @override
 String toString() {
-  return 'DreamDTO(dreamId: $dreamId, title: $title, text: $text, createdAt: $createdAt, isReady: $isReady)';
+  return 'DreamDTO(dreamId: $dreamId, title: $title, text: $text, interpretation: $interpretation, createdAt: $createdAt, isReady: $isReady)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$DreamDTOCopyWith<$Res> implements $DreamDTOCopyWith<$Res>
   factory _$DreamDTOCopyWith(_DreamDTO value, $Res Function(_DreamDTO) _then) = __$DreamDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String dreamId, String title,@JsonKey(name: 'dream') String text, int? createdAt, bool isReady
+ String dreamId, String title,@JsonKey(name: 'dream') String text, String? interpretation, int? createdAt, bool isReady
 });
 
 
@@ -272,12 +274,13 @@ class __$DreamDTOCopyWithImpl<$Res>
 
 /// Create a copy of DreamDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? dreamId = null,Object? title = null,Object? text = null,Object? createdAt = freezed,Object? isReady = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? dreamId = null,Object? title = null,Object? text = null,Object? interpretation = freezed,Object? createdAt = freezed,Object? isReady = null,}) {
   return _then(_DreamDTO(
 dreamId: null == dreamId ? _self.dreamId : dreamId // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
-as String,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,interpretation: freezed == interpretation ? _self.interpretation : interpretation // ignore: cast_nullable_to_non_nullable
+as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as int?,isReady: null == isReady ? _self.isReady : isReady // ignore: cast_nullable_to_non_nullable
 as bool,
   ));

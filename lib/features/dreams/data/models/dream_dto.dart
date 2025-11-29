@@ -12,6 +12,7 @@ abstract class DreamDTO with _$DreamDTO {
     required String dreamId,
     required String title,
     @JsonKey(name: 'dream') required String text,
+    String? interpretation,
     int? createdAt,
     @Default(false) bool isReady,
   }) = _DreamDTO;
@@ -24,6 +25,7 @@ abstract class DreamDTO with _$DreamDTO {
       id: dreamId,
       title: title,
       text: text,
+      interpretation: interpretation,
       isReady: isReady,
       createdAt: createdAt != null
           ? DateTime.fromMillisecondsSinceEpoch(createdAt!)
