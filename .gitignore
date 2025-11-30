@@ -65,3 +65,6 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+# Firebase Service Account
+android/app/tush-a80d1-firebase-adminsdk-fbsvc-1e7fec01b1.json

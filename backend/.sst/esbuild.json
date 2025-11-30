@@ -1,5 +1,5 @@
 
-  .sst/platform/sst.config.1764438645399.mjs ────────────────────────────────────── 715.9kb ─ 100.0%
+  .sst/platform/sst.config.1764483016768.mjs ────────────────────────────────────── 715.3kb ─ 100.0%
    ├ .sst/platform/src/components/aws/router.ts ──────────────────────────────────── 34.9kb ─── 4.9%
    │  └ .sst/platform/src/components/aws/index.ts
    │     └ .sst/platform/src/components/index.ts
@@ -48,7 +48,7 @@
    │     └ .sst/platform/src/components/index.ts
    │        └ sst.config.ts
    │           └ eval.ts
-   ├ .sst/platform/src/components/aws/aurora.ts ──────────────────────────────────── 18.1kb ─── 2.5%
+   ├ .sst/platform/src/components/aws/aurora.ts ──────────────────────────────────── 18.0kb ─── 2.5%
    │  └ .sst/platform/src/components/aws/index.ts
    │     └ .sst/platform/src/components/index.ts
    │        └ sst.config.ts
@@ -322,7 +322,7 @@
    │        └ .sst/platform/src/components/index.ts
    │           └ sst.config.ts
    │              └ eval.ts
-   ├ .sst/platform/src/components/aws/kinesis-stream-lambda-subscriber.ts ─────────── 2.5kb ─── 0.3%
+   ├ .sst/platform/src/components/aws/kinesis-stream-lambda-subscriber.ts ─────────── 2.5kb ─── 0.4%
    │  └ .sst/platform/src/components/aws/kinesis-stream.ts
    │     └ .sst/platform/src/components/aws/index.ts
    │        └ .sst/platform/src/components/index.ts
@@ -590,8 +590,6 @@
    │           └ .sst/platform/src/components/index.ts
    │              └ sst.config.ts
    │                 └ eval.ts
-   ├ <define:$cli> ────────────────────────────────────────────────────────────────── 705b ──── 0.1%
-   │  └ eval.ts
    ├ .sst/platform/src/components/experimental/dev-command.ts ─────────────────────── 686b ──── 0.1%
    │  └ .sst/platform/src/components/experimental/index.ts
    │     └ .sst/platform/src/components/index.ts
@@ -696,6 +694,8 @@
    │        └ .sst/platform/src/components/index.ts
    │           └ sst.config.ts
    │              └ eval.ts
+   ├ <define:$cli> ────────────────────────────────────────────────────────────────── 304b ──── 0.0%
+   │  └ eval.ts
    ├ .sst/platform/src/components/aws/providers/function-environment-update.ts ────── 297b ──── 0.0%
    │  └ .sst/platform/src/components/aws/function.ts
    │     └ .sst/platform/src/components/aws/index.ts
@@ -708,7 +708,7 @@
    │        └ .sst/platform/src/components/index.ts
    │           └ sst.config.ts
    │              └ eval.ts
-   ├ <define:$app> ────────────────────────────────────────────────────────────────── 282b ──── 0.0%
+   ├ <define:$app> ────────────────────────────────────────────────────────────────── 292b ──── 0.0%
    │  └ eval.ts
    ├ .sst/platform/src/components/aws/providers/kv-routes-update.ts ───────────────── 277b ──── 0.0%
    │  └ .sst/platform/src/components/aws/static-site.ts

@@ -80,3 +80,16 @@ console.log(`   Region: ${region}`);
 console.log(`   UserPoolId: ${UserPoolId}`);
 console.log(`   ClientId: ${UserPoolClientId}`);
 console.log(`   ApiEndpoint: ${ApiEndpoint}`);
+
+// Update lib/core/config/app_config.dart
+const appConfigPath = path.join(
+  __dirname,
+  "../../lib/core/config/app_config.dart"
+);
+const appConfigContent = `class AppConfig {
+  static const String apiUrl =
+      '${ApiEndpoint}';
+}
+`;
+fs.writeFileSync(appConfigPath, appConfigContent, "utf8");
+console.log("✅ Successfully updated lib/core/config/app_config.dart");
