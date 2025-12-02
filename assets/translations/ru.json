@@ -40,5 +40,9 @@
   "dream_saved_success": "Сон успешно сохранен!",
   "new_dream": "Новый сон",
   "no_dreams_yet": "Снов пока нет",
-  "processing": "Обработка..."
+  "processing": "Обработка...",
+  "password_min_length": "Пароль должен содержать минимум 8 символов",
+  "password_must_contain_number": "Пароль должен содержать хотя бы 1 цифру",
+  "password_must_contain_lowercase": "Пароль должен содержать хотя бы 1 строчную букву",
+  "user_already_exists": "Пользователь уже существует"
 }

@@ -2,8 +2,8 @@
   "version": "1",
   "auth": {
     "aws_region": "eu-north-1",
-    "user_pool_id": "eu-north-1_5tbFXQpeA",
-    "user_pool_client_id": "fva1sm7hdgpc0a6vfg9uihear",
+    "user_pool_id": "eu-north-1_OFwaIQTQe",
+    "user_pool_client_id": "134ceb83hqrri56up19nj9q7k8",
     "username_attributes": [
       "EMAIL"
     ],
@@ -24,7 +24,7 @@
   },
   "data": {
     "aws_region": "eu-north-1",
-    "url": "https://ocuwpvuch8.execute-api.eu-north-1.amazonaws.com",
+    "url": "https://ir6jad1sec.execute-api.eu-north-1.amazonaws.com",
     "default_authorization_type": "AMAZON_COGNITO_USER_POOLS",
     "authorization_types": [
       "AMAZON_COGNITO_USER_POOLS"

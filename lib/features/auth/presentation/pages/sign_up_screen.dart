@@ -18,6 +18,8 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Force rebuild when locale changes
+    context.locale;
     return BlocProvider(
       create: (context) => GetIt.I<SignUpBloc>(),
       child: Scaffold(
@@ -47,9 +49,12 @@ class _SignUpForm extends HookWidget {
             }
           },
           failure: (message) {
+            final errorMessage = message.contains('User already exists')
+                ? 'user_already_exists'.tr()
+                : message;
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text(message)));
+            ).showSnackBar(SnackBar(content: Text(errorMessage)));
           },
           orElse: () {},
         );
@@ -92,6 +97,18 @@ class _SignUpForm extends HookWidget {
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
                         errorText: 'please_enter_password'.tr(),
+                      ),
+                      FormBuilderValidators.minLength(
+                        8,
+                        errorText: 'password_min_length'.tr(),
+                      ),
+                      FormBuilderValidators.match(
+                        r'(?=.*[0-9])',
+                        errorText: 'password_must_contain_number'.tr(),
+                      ),
+                      FormBuilderValidators.match(
+                        r'(?=.*[a-z])',
+                        errorText: 'password_must_contain_lowercase'.tr(),
                       ),
                     ]),
                   ),

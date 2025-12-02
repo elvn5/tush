@@ -19,10 +19,15 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Force rebuild when locale changes
+    context.locale;
     return BlocProvider(
       create: (context) => GetIt.I<SignInBloc>(),
       child: Scaffold(
-        appBar: AppBar(title: Text('sign_in'.tr())),
+        appBar: AppBar(
+          title: Text('sign_in'.tr()),
+          actions: const [LanguageSwitcher()],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: _SignInForm(),
