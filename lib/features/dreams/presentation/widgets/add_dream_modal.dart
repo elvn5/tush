@@ -22,9 +22,12 @@ class AddDreamModal extends HookWidget {
       ),
       child: BlocListener<DreamsBloc, DreamsState>(
         listener: (context, state) {
-          state.maybeWhen(
-            success: () => Navigator.of(context).pop(),
-            orElse: () {},
+          state.mapOrNull(
+            loaded: (state) {
+              if (state.isAdded) {
+                Navigator.of(context).pop();
+              }
+            },
           );
         },
         child: FormBuilder(

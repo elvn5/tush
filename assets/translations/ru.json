@@ -44,5 +44,12 @@
   "password_min_length": "Пароль должен содержать минимум 8 символов",
   "password_must_contain_number": "Пароль должен содержать хотя бы 1 цифру",
   "password_must_contain_lowercase": "Пароль должен содержать хотя бы 1 строчную букву",
-  "user_already_exists": "Пользователь уже существует"
+  "user_already_exists": "Пользователь уже существует",
+  "incorrect_username_or_password": "Неверное имя пользователя или пароль",
+  "user_does_not_exist": "Пользователь не существует",
+  "filter_by_date": "Фильтр по дате",
+  "select_date_range": "Выберите диапазон дат",
+  "start_date": "Начальная дата",
+  "end_date": "Конечная дата",
+  "clear_filter": "Очистить фильтр"
 }

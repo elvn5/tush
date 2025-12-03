@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import '../routes/app_router.gr.dart';
+import '../../../../routes/app_router.gr.dart';
 
 @RoutePage()
 class AuthScreen extends StatelessWidget {

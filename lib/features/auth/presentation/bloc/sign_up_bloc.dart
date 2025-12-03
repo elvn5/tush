@@ -59,7 +59,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         // Actually, I'll check SignUpScreen first.
         emit(const _Success());
       } catch (e) {
-        print(e);
         emit(_Failure(e.toString()));
       }
     });

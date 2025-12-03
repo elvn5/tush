@@ -6,7 +6,7 @@ import 'package:tush/main.dart';
 void main() {
   testWidgets('Auth flow smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(Tush());
     await tester.pumpAndSettle(); // Wait for navigation
 
     // Verify that we are on the Login screen.

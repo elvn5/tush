@@ -3,7 +3,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tush/features/dreams/data/models/dream_dto.dart';
-import 'package:tush/features/dreams/domain/entities/dream.dart';
+import '../../domain/entities/paginated_dreams.dart';
 import '../../domain/repositories/dreams_repository.dart';
 
 import 'package:tush/core/config/app_config.dart';
@@ -30,25 +30,58 @@ class DreamsRepositoryImpl implements DreamsRepository {
   }
 
   @override
-  Future<List<Dream>> getDreams() async {
+  Future<PaginatedDreams> getDreams({
+    int limit = 10,
+    String? cursor,
+    String? search,
+    bool? status,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
     try {
       final String apiUrl = '${AppConfig.apiUrl}/dreams';
-      final response = await _dio.get(apiUrl);
+      final queryParameters = {
+        'limit': limit,
+        if (cursor != null) 'cursor': cursor,
+        if (search != null && search.isNotEmpty) 'search': search,
+        if (status != null) 'status': status,
+        if (startDate != null) 'startDate': startDate.millisecondsSinceEpoch,
+        if (endDate != null) 'endDate': endDate.millisecondsSinceEpoch,
+      };
+
+      final response = await _dio.get(apiUrl, queryParameters: queryParameters);
 
       if (response.statusCode == 200) {
         final dynamic responseData = response.data;
-        final List<dynamic> data;
+        final Map<String, dynamic> data;
         if (responseData is String) {
-          data = jsonDecode(responseData) as List<dynamic>;
+          data = jsonDecode(responseData) as Map<String, dynamic>;
         } else {
-          data = responseData as List<dynamic>;
+          data = responseData as Map<String, dynamic>;
         }
-        return data.map((json) => DreamDTO.fromJson(json).toDomain()).toList();
+
+        final items = (data['items'] as List<dynamic>)
+            .map((json) => DreamDTO.fromJson(json).toDomain())
+            .toList();
+        final nextCursor = data['nextCursor'] as String?;
+
+        return PaginatedDreams(items: items, nextCursor: nextCursor);
       } else {
         throw Exception('Failed to load dreams');
       }
     } catch (e) {
       safePrint('Error fetching dreams: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteDream(String id) async {
+    try {
+      final String apiUrl = '${AppConfig.apiUrl}/dreams/$id';
+      await _dio.delete(apiUrl);
+    } catch (e) {
+      safePrint('Error deleting dream: $e');
       rethrow;
     }
   }

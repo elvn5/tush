@@ -11,19 +11,22 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i10;
 import 'package:flutter/material.dart' as _i11;
+import 'package:tush/core/presentation/pages/dashboard_screen.dart' as _i3;
+import 'package:tush/core/presentation/pages/settings_screen.dart' as _i7;
+import 'package:tush/features/auth/presentation/pages/auth_screen.dart' as _i1;
 import 'package:tush/features/auth/presentation/pages/confirmation_screen.dart'
     as _i2;
+import 'package:tush/features/auth/presentation/pages/profile_screen.dart'
+    as _i6;
 import 'package:tush/features/auth/presentation/pages/sign_in_screen.dart'
     as _i8;
 import 'package:tush/features/auth/presentation/pages/sign_up_screen.dart'
     as _i9;
 import 'package:tush/features/dreams/domain/entities/dream.dart' as _i12;
-import 'package:tush/screens/auth_screen.dart' as _i1;
-import 'package:tush/screens/dashboard_screen.dart' as _i3;
-import 'package:tush/screens/dream_detail_screen.dart' as _i4;
-import 'package:tush/screens/home_screen.dart' as _i5;
-import 'package:tush/screens/profile_screen.dart' as _i6;
-import 'package:tush/screens/settings_screen.dart' as _i7;
+import 'package:tush/features/dreams/presentation/pages/dream_detail_screen.dart'
+    as _i4;
+import 'package:tush/features/dreams/presentation/pages/home_screen.dart'
+    as _i5;
 
 /// generated route for
 /// [_i1.AuthScreen]

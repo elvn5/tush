@@ -25,7 +25,7 @@ class SignInScreen extends StatelessWidget {
       create: (context) => GetIt.I<SignInBloc>(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('sign_in'.tr()),
+          title: AppTitleMedium(text: 'sign_in'.tr()),
           actions: const [LanguageSwitcher()],
         ),
         body: Padding(
@@ -49,9 +49,17 @@ class _SignInForm extends HookWidget {
             context.router.replace(const HomeRoute());
           },
           failure: (message) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(message)));
+            String errorMessage = message;
+            if (message.contains('Incorrect username or password')) {
+              errorMessage = 'incorrect_username_or_password'.tr();
+            } else if (message.contains('User does not exist')) {
+              errorMessage = 'user_does_not_exist'.tr();
+            }
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: AppBodyMedium(text: errorMessage, color: Colors.white),
+              ),
+            );
           },
           userNotConfirmed: () {
             Fluttertoast.showToast(
@@ -139,7 +147,10 @@ class _SignInForm extends HookWidget {
                       onPressed: () {
                         context.router.push(const SignUpRoute());
                       },
-                      child: Text('no_account'.tr()),
+                      child: AppBodyMedium(
+                        text: 'no_account'.tr(),
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
                 ],

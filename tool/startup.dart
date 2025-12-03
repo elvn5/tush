@@ -1,5 +1,7 @@
 import 'dart:io';
 
+// ignore_for_file: avoid_print
+
 void main(List<String> args) async {
   // Parse CLI arguments
   String? cliStage;

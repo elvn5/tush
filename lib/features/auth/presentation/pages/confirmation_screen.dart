@@ -29,9 +29,11 @@ class ConfirmationScreen extends HookWidget {
               context.router.replaceAll([const SignInRoute()]);
             },
             failure: (message) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(message)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: AppBodyMedium(text: message, color: Colors.white),
+                ),
+              );
             },
             orElse: () {},
           );

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+// ignore_for_file: avoid_print
+
 void main() {
   final pubspecFile = File('pubspec.yaml');
   if (!pubspecFile.existsSync()) {
@@ -35,7 +37,7 @@ void main() {
   }
 
   if (versionUpdated) {
-    pubspecFile.writeAsStringSync(newLines.join('\n') + '\n');
+    pubspecFile.writeAsStringSync('${newLines.join('\n')}\n');
   } else {
     print('Error: Could not find or parse version in pubspec.yaml');
     exit(1);

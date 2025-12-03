@@ -23,7 +23,7 @@ class SignUpScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => GetIt.I<SignUpBloc>(),
       child: Scaffold(
-        appBar: AppBar(title: Text('sign_up'.tr())),
+        appBar: AppBar(title: AppTitleMedium(text: 'sign_up'.tr())),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: _SignUpForm(),
@@ -52,9 +52,11 @@ class _SignUpForm extends HookWidget {
             final errorMessage = message.contains('User already exists')
                 ? 'user_already_exists'.tr()
                 : message;
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(errorMessage)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: AppBodyMedium(text: errorMessage, color: Colors.white),
+              ),
+            );
           },
           orElse: () {},
         );
@@ -139,7 +141,10 @@ class _SignUpForm extends HookWidget {
                       onPressed: () {
                         context.router.push(const SignInRoute());
                       },
-                      child: Text('already_have_account'.tr()),
+                      child: AppBodyMedium(
+                        text: 'already_have_account'.tr(),
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
                 ],

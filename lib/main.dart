@@ -33,7 +33,7 @@ void main() async {
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ru')],
       path: 'assets/translations',
-      fallbackLocale: const Locale('en'),
+      fallbackLocale: const Locale('ru'),
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => GetIt.I<ThemeCubit>()),
@@ -42,7 +42,7 @@ void main() async {
                 GetIt.I<AuthBloc>()..add(const AuthEvent.checkRequested()),
           ),
         ],
-        child: MyApp(),
+        child: Tush(),
       ),
     ),
   );
@@ -60,8 +60,8 @@ Future<void> _configureAmplify() async {
   }
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class Tush extends StatelessWidget {
+  Tush({super.key});
 
   final _appRouter = AppRouter();
 
