@@ -145,6 +145,18 @@ class _SignInForm extends HookWidget {
                   Center(
                     child: TextButton(
                       onPressed: () {
+                        context.router.push(const ForgotPasswordRoute());
+                      },
+                      child: AppBodyMedium(
+                        text: 'forgot_password'.tr(),
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+                  const Gap(16),
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
                         context.router.push(const SignUpRoute());
                       },
                       child: AppBodyMedium(

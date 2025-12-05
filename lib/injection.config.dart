@@ -19,11 +19,16 @@ import 'core/presentation/bloc/theme_cubit.dart' as _i1050;
 import 'features/auth/data/datasources/auth_remote_data_source.dart' as _i767;
 import 'features/auth/data/repositories/auth_repository_impl.dart' as _i111;
 import 'features/auth/domain/repositories/auth_repository.dart' as _i1015;
+import 'features/auth/domain/usecases/confirm_reset_password_use_case.dart'
+    as _i820;
 import 'features/auth/domain/usecases/confirm_sign_up_use_case.dart' as _i1006;
+import 'features/auth/domain/usecases/reset_password_use_case.dart' as _i536;
 import 'features/auth/domain/usecases/sign_in_use_case.dart' as _i558;
 import 'features/auth/domain/usecases/sign_up_use_case.dart' as _i477;
 import 'features/auth/presentation/bloc/auth_bloc.dart' as _i363;
+import 'features/auth/presentation/bloc/forgot_password_bloc.dart' as _i1045;
 import 'features/auth/presentation/bloc/profile_bloc.dart' as _i930;
+import 'features/auth/presentation/bloc/reset_password_bloc.dart' as _i806;
 import 'features/auth/presentation/bloc/sign_in_bloc.dart' as _i457;
 import 'features/auth/presentation/bloc/sign_up_bloc.dart' as _i572;
 import 'features/dreams/data/repositories/dreams_repository_impl.dart' as _i881;
@@ -71,11 +76,23 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1006.ConfirmSignUpUseCase>(),
       ),
     );
+    gh.lazySingleton<_i820.ConfirmResetPasswordUseCase>(
+      () => _i820.ConfirmResetPasswordUseCase(gh<_i1015.AuthRepository>()),
+    );
+    gh.lazySingleton<_i536.ResetPasswordUseCase>(
+      () => _i536.ResetPasswordUseCase(gh<_i1015.AuthRepository>()),
+    );
     gh.factory<_i930.ProfileBloc>(
       () => _i930.ProfileBloc(gh<_i1015.AuthRepository>()),
     );
     gh.factory<_i687.DreamsBloc>(
       () => _i687.DreamsBloc(gh<_i324.DreamsRepository>()),
+    );
+    gh.factory<_i806.ResetPasswordBloc>(
+      () => _i806.ResetPasswordBloc(gh<_i820.ConfirmResetPasswordUseCase>()),
+    );
+    gh.factory<_i1045.ForgotPasswordBloc>(
+      () => _i1045.ForgotPasswordBloc(gh<_i536.ResetPasswordUseCase>()),
     );
     return this;
   }

@@ -34,6 +34,7 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('ru')],
       path: 'assets/translations',
       fallbackLocale: const Locale('ru'),
+      startLocale: const Locale('ru'),
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => GetIt.I<ThemeCubit>()),

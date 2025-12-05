@@ -14,6 +14,7 @@ class ProfileEvent with _$ProfileEvent {
     required String oldPassword,
     required String newPassword,
   }) = _PasswordChangeRequested;
+  const factory ProfileEvent.deleteAccountRequested() = _DeleteAccountRequested;
 }
 
 @freezed
@@ -24,6 +25,7 @@ class ProfileState with _$ProfileState {
   const factory ProfileState.error(String message) = _Error;
   const factory ProfileState.logoutSuccess() = _LogoutSuccess;
   const factory ProfileState.passwordChangeSuccess() = _PasswordChangeSuccess;
+  const factory ProfileState.deleteAccountSuccess() = _DeleteAccountSuccess;
 }
 
 @injectable
@@ -34,6 +36,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<_Started>(_onStarted);
     on<_LogoutRequested>(_onLogoutRequested);
     on<_PasswordChangeRequested>(_onPasswordChangeRequested);
+    on<_DeleteAccountRequested>(_onDeleteAccountRequested);
   }
 
   Future<void> _onStarted(_Started event, Emitter<ProfileState> emit) async {
@@ -89,6 +92,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (currentUser != null) {
         emit(_Loaded(currentUser));
       }
+    }
+  }
+
+  Future<void> _onDeleteAccountRequested(
+    _DeleteAccountRequested event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(const _Loading());
+    try {
+      await _authRepository.deleteAccount();
+      emit(const _DeleteAccountSuccess());
+    } catch (e) {
+      emit(_Error(e.toString()));
     }
   }
 }

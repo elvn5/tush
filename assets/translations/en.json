@@ -51,5 +51,22 @@
   "select_date_range": "Select Date Range",
   "start_date": "Start Date",
   "end_date": "End Date",
-  "clear_filter": "Clear Filter"
+  "clear_filter": "Clear Filter",
+  "search_dreams": "Search dreams...",
+  "forgot_password": "Forgot Password?",
+  "reset_password": "Reset Password",
+  "enter_email_reset_instruction": "Enter your email to receive a password reset code",
+  "send_code": "Send Code",
+  "password_reset_success": "Password reset successfully",
+  "enter_new_password": "Enter New Password",
+  "enter_code_reset_instruction": "Enter the code sent to {}",
+  "please_enter_code": "Please enter the code",
+  "delete_account": "Delete Account",
+  "delete_account_confirmation": "Are you sure you want to delete your account? This action cannot be undone.",
+  "account_deleted_successfully": "Account deleted successfully",
+  "delete": "Delete",
+  "delete_dream": "Delete Dream",
+  "delete_dream_confirmation": "Are you sure you want to delete this dream?",
+  "dream_deleted": "Dream deleted",
+  "privacy_policy": "Privacy Policy"
 }

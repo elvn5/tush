@@ -50,4 +50,27 @@ class AuthRepositoryImpl implements AuthRepository {
       confirmationCode: confirmationCode,
     );
   }
+
+  @override
+  Future<void> resetPassword({required String email}) async {
+    return _remoteDataSource.resetPassword(email: email);
+  }
+
+  @override
+  Future<void> confirmResetPassword({
+    required String email,
+    required String newPassword,
+    required String confirmationCode,
+  }) async {
+    return _remoteDataSource.confirmResetPassword(
+      email: email,
+      newPassword: newPassword,
+      confirmationCode: confirmationCode,
+    );
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    return _remoteDataSource.deleteAccount();
+  }
 }

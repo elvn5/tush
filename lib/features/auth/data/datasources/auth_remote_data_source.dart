@@ -19,6 +19,13 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String confirmationCode,
   });
+  Future<void> resetPassword({required String email});
+  Future<void> confirmResetPassword({
+    required String email,
+    required String newPassword,
+    required String confirmationCode,
+  });
+  Future<void> deleteAccount();
 }
 
 @LazySingleton(as: AuthRemoteDataSource)
@@ -139,6 +146,46 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       safePrint('Confirm sign up result: $result');
     } on AuthException catch (e) {
       safePrint('Error confirming sign up: ${e.message}');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> resetPassword({required String email}) async {
+    try {
+      final result = await Amplify.Auth.resetPassword(username: email);
+      safePrint('Reset password result: $result');
+    } on AuthException catch (e) {
+      safePrint('Error resetting password: ${e.message}');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> confirmResetPassword({
+    required String email,
+    required String newPassword,
+    required String confirmationCode,
+  }) async {
+    try {
+      final result = await Amplify.Auth.confirmResetPassword(
+        username: email,
+        newPassword: newPassword,
+        confirmationCode: confirmationCode,
+      );
+      safePrint('Confirm reset password result: $result');
+    } on AuthException catch (e) {
+      safePrint('Error confirming reset password: ${e.message}');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    try {
+      await Amplify.Auth.deleteUser();
+    } on AuthException catch (e) {
+      safePrint('Error deleting account: ${e.message}');
       rethrow;
     }
   }

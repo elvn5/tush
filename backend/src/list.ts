@@ -6,7 +6,32 @@ const client = new DynamoDBClient({});
 const dynamoDb = DynamoDBDocumentClient.from(client);
 
 export const handler = async (event: any) => {
-  const userId = event.requestContext.authorizer.jwt.claims.sub;
+  // Safely extract userId with better error handling
+  const userId = event.requestContext?.authorizer?.jwt?.claims?.sub;
+
+  if (!userId) {
+    console.error(
+      "Authorization Error - Event context:",
+      JSON.stringify(
+        {
+          hasRequestContext: !!event.requestContext,
+          hasAuthorizer: !!event.requestContext?.authorizer,
+          hasJwt: !!event.requestContext?.authorizer?.jwt,
+          hasClaims: !!event.requestContext?.authorizer?.jwt?.claims,
+          headers: event.headers,
+        },
+        null,
+        2
+      )
+    );
+
+    return {
+      statusCode: 401,
+      body: JSON.stringify({
+        error: "Unauthorized - Invalid or missing token",
+      }),
+    };
+  }
   const { limit, cursor, search, status, startDate, endDate } =
     event.queryStringParameters || {};
 

@@ -79,6 +79,17 @@ class SettingsScreen extends StatelessWidget {
               ],
             ),
           ),
+          const Gap(20),
+          AppTitleLarge(text: 'privacy_policy'.tr(context: context)),
+          const Gap(10),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.privacy_tip),
+              title: Text('privacy_policy'.tr(context: context)),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.router.pushNamed('/privacy-policy'),
+            ),
+          ),
         ],
       ),
     );

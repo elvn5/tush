@@ -102,6 +102,16 @@ class DreamDetailScreen extends StatelessWidget {
                         data: dream.interpretation!,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
+                        config: MarkdownConfig(
+                          configs: [
+                            TableConfig(
+                              wrapper: (child) => SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: child,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

@@ -51,5 +51,22 @@
   "select_date_range": "Выберите диапазон дат",
   "start_date": "Начальная дата",
   "end_date": "Конечная дата",
-  "clear_filter": "Очистить фильтр"
+  "clear_filter": "Очистить фильтр",
+  "search_dreams": "Поиск снов...",
+  "forgot_password": "Забыли пароль?",
+  "reset_password": "Сброс пароля",
+  "enter_email_reset_instruction": "Введите ваш email для получения кода сброса пароля",
+  "send_code": "Отправить код",
+  "password_reset_success": "Пароль успешно сброшен",
+  "enter_new_password": "Введите новый пароль",
+  "enter_code_reset_instruction": "Введите код, отправленный на {}",
+  "please_enter_code": "Пожалуйста, введите код",
+  "delete_account": "Удалить аккаунт",
+  "delete_account_confirmation": "Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.",
+  "account_deleted_successfully": "Аккаунт успешно удален",
+  "delete": "Удалить",
+  "delete_dream": "Удалить сон",
+  "delete_dream_confirmation": "Вы уверены, что хотите удалить этот сон?",
+  "dream_deleted": "Сон удален",
+  "privacy_policy": "Политика конфиденциальности"
 }

@@ -50,6 +50,28 @@ class AppTitleMedium extends StatelessWidget {
   }
 }
 
+class AppTitleSmall extends StatelessWidget {
+  final String text;
+  final Color? color;
+  final TextAlign? textAlign;
+
+  const AppTitleSmall({
+    super.key,
+    required this.text,
+    this.color,
+    this.textAlign,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      textAlign: textAlign,
+      style: Theme.of(context).textTheme.titleSmall?.copyWith(color: color),
+    );
+  }
+}
+
 class AppBodyLarge extends StatelessWidget {
   final String text;
   final Color? color;

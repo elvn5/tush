@@ -22198,7 +22198,29 @@ if (process.env?.ECS_CONTAINER_METADATA_URI_V4 && !process.env.SST_DISABLE_LOG_P
 var client = new DynamoDBClient({});
 var dynamoDb = DynamoDBDocumentClient.from(client);
 var handler = /* @__PURE__ */ __name(async (event) => {
-  const userId = event.requestContext.authorizer.jwt.claims.sub;
+  const userId = event.requestContext?.authorizer?.jwt?.claims?.sub;
+  if (!userId) {
+    console.error(
+      "Authorization Error - Event context:",
+      JSON.stringify(
+        {
+          hasRequestContext: !!event.requestContext,
+          hasAuthorizer: !!event.requestContext?.authorizer,
+          hasJwt: !!event.requestContext?.authorizer?.jwt,
+          hasClaims: !!event.requestContext?.authorizer?.jwt?.claims,
+          headers: event.headers
+        },
+        null,
+        2
+      )
+    );
+    return {
+      statusCode: 401,
+      body: JSON.stringify({
+        error: "Unauthorized - Invalid or missing token"
+      })
+    };
+  }
   const { limit, cursor, search, status, startDate, endDate } = event.queryStringParameters || {};
   const queryLimit = limit ? parseInt(limit) : 10;
   const exclusiveStartKey = cursor ? JSON.parse(Buffer.from(cursor, "base64").toString("utf-8")) : void 0;

@@ -33,6 +33,12 @@ class ProfileScreen extends StatelessWidget {
                 );
                 Navigator.of(context).pop(); // Close dialog
               },
+              deleteAccountSuccess: () {
+                context.router.replaceAll([const SignInRoute()]);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('account_deleted_successfully'.tr())),
+                );
+              },
               error: (message) {
                 ScaffoldMessenger.of(
                   context,
@@ -84,6 +90,15 @@ class ProfileScreen extends StatelessWidget {
                       },
                       backgroundColor: Theme.of(context).colorScheme.error,
                       textColor: Theme.of(context).colorScheme.onError,
+                    ),
+                    const Gap(16),
+                    AppButton(
+                      text: 'delete_account'.tr(),
+                      onPressed: () => _showDeleteAccountConfirmation(context),
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.errorContainer,
+                      textColor: Theme.of(context).colorScheme.onErrorContainer,
                     ),
                   ],
                 ),
@@ -152,6 +167,34 @@ class ProfileScreen extends StatelessWidget {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  void _showDeleteAccountConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text('delete_account'.tr()),
+          content: Text('delete_account_confirmation'.tr()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text('cancel'.tr()),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                context.read<ProfileBloc>().add(
+                  const ProfileEvent.deleteAccountRequested(),
+                );
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: Text('delete'.tr()),
+            ),
+          ],
         );
       },
     );

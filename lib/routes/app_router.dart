@@ -11,6 +11,8 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: SignInRoute.page),
     AutoRoute(page: SignUpRoute.page),
     AutoRoute(page: ConfirmationRoute.page),
+    AutoRoute(page: ForgotPasswordRoute.page),
+    AutoRoute(page: ResetPasswordRoute.page),
     AutoRoute(
       page: DashboardRoute.page,
       initial: true,
@@ -22,5 +24,6 @@ class AppRouter extends RootStackRouter {
       ],
     ),
     AutoRoute(page: DreamDetailRoute.page),
+    AutoRoute(page: PrivacyPolicyRoute.page, path: '/privacy-policy'),
   ];
 }

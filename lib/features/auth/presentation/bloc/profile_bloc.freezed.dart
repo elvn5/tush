@@ -55,13 +55,14 @@ extension ProfileEventPatterns on ProfileEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _LogoutRequested value)?  logoutRequested,TResult Function( _PasswordChangeRequested value)?  passwordChangeRequested,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _LogoutRequested value)?  logoutRequested,TResult Function( _PasswordChangeRequested value)?  passwordChangeRequested,TResult Function( _DeleteAccountRequested value)?  deleteAccountRequested,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _LogoutRequested() when logoutRequested != null:
 return logoutRequested(_that);case _PasswordChangeRequested() when passwordChangeRequested != null:
-return passwordChangeRequested(_that);case _:
+return passwordChangeRequested(_that);case _DeleteAccountRequested() when deleteAccountRequested != null:
+return deleteAccountRequested(_that);case _:
   return orElse();
 
 }
@@ -79,13 +80,14 @@ return passwordChangeRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _LogoutRequested value)  logoutRequested,required TResult Function( _PasswordChangeRequested value)  passwordChangeRequested,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _LogoutRequested value)  logoutRequested,required TResult Function( _PasswordChangeRequested value)  passwordChangeRequested,required TResult Function( _DeleteAccountRequested value)  deleteAccountRequested,}){
 final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case _LogoutRequested():
 return logoutRequested(_that);case _PasswordChangeRequested():
-return passwordChangeRequested(_that);case _:
+return passwordChangeRequested(_that);case _DeleteAccountRequested():
+return deleteAccountRequested(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -102,13 +104,14 @@ return passwordChangeRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _LogoutRequested value)?  logoutRequested,TResult? Function( _PasswordChangeRequested value)?  passwordChangeRequested,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _LogoutRequested value)?  logoutRequested,TResult? Function( _PasswordChangeRequested value)?  passwordChangeRequested,TResult? Function( _DeleteAccountRequested value)?  deleteAccountRequested,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _LogoutRequested() when logoutRequested != null:
 return logoutRequested(_that);case _PasswordChangeRequested() when passwordChangeRequested != null:
-return passwordChangeRequested(_that);case _:
+return passwordChangeRequested(_that);case _DeleteAccountRequested() when deleteAccountRequested != null:
+return deleteAccountRequested(_that);case _:
   return null;
 
 }
@@ -125,12 +128,13 @@ return passwordChangeRequested(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  logoutRequested,TResult Function( String oldPassword,  String newPassword)?  passwordChangeRequested,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  logoutRequested,TResult Function( String oldPassword,  String newPassword)?  passwordChangeRequested,TResult Function()?  deleteAccountRequested,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _LogoutRequested() when logoutRequested != null:
 return logoutRequested();case _PasswordChangeRequested() when passwordChangeRequested != null:
-return passwordChangeRequested(_that.oldPassword,_that.newPassword);case _:
+return passwordChangeRequested(_that.oldPassword,_that.newPassword);case _DeleteAccountRequested() when deleteAccountRequested != null:
+return deleteAccountRequested();case _:
   return orElse();
 
 }
@@ -148,12 +152,13 @@ return passwordChangeRequested(_that.oldPassword,_that.newPassword);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  logoutRequested,required TResult Function( String oldPassword,  String newPassword)  passwordChangeRequested,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  logoutRequested,required TResult Function( String oldPassword,  String newPassword)  passwordChangeRequested,required TResult Function()  deleteAccountRequested,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _LogoutRequested():
 return logoutRequested();case _PasswordChangeRequested():
-return passwordChangeRequested(_that.oldPassword,_that.newPassword);case _:
+return passwordChangeRequested(_that.oldPassword,_that.newPassword);case _DeleteAccountRequested():
+return deleteAccountRequested();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -170,12 +175,13 @@ return passwordChangeRequested(_that.oldPassword,_that.newPassword);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  logoutRequested,TResult? Function( String oldPassword,  String newPassword)?  passwordChangeRequested,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  logoutRequested,TResult? Function( String oldPassword,  String newPassword)?  passwordChangeRequested,TResult? Function()?  deleteAccountRequested,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _LogoutRequested() when logoutRequested != null:
 return logoutRequested();case _PasswordChangeRequested() when passwordChangeRequested != null:
-return passwordChangeRequested(_that.oldPassword,_that.newPassword);case _:
+return passwordChangeRequested(_that.oldPassword,_that.newPassword);case _DeleteAccountRequested() when deleteAccountRequested != null:
+return deleteAccountRequested();case _:
   return null;
 
 }
@@ -316,6 +322,38 @@ as String,
 }
 
 /// @nodoc
+
+
+class _DeleteAccountRequested implements ProfileEvent {
+  const _DeleteAccountRequested();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeleteAccountRequested);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProfileEvent.deleteAccountRequested()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
 mixin _$ProfileState {
 
 
@@ -359,7 +397,7 @@ extension ProfileStatePatterns on ProfileState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Loaded value)?  loaded,TResult Function( _Error value)?  error,TResult Function( _LogoutSuccess value)?  logoutSuccess,TResult Function( _PasswordChangeSuccess value)?  passwordChangeSuccess,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Loaded value)?  loaded,TResult Function( _Error value)?  error,TResult Function( _LogoutSuccess value)?  logoutSuccess,TResult Function( _PasswordChangeSuccess value)?  passwordChangeSuccess,TResult Function( _DeleteAccountSuccess value)?  deleteAccountSuccess,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
@@ -368,7 +406,8 @@ return loading(_that);case _Loaded() when loaded != null:
 return loaded(_that);case _Error() when error != null:
 return error(_that);case _LogoutSuccess() when logoutSuccess != null:
 return logoutSuccess(_that);case _PasswordChangeSuccess() when passwordChangeSuccess != null:
-return passwordChangeSuccess(_that);case _:
+return passwordChangeSuccess(_that);case _DeleteAccountSuccess() when deleteAccountSuccess != null:
+return deleteAccountSuccess(_that);case _:
   return orElse();
 
 }
@@ -386,7 +425,7 @@ return passwordChangeSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Loaded value)  loaded,required TResult Function( _Error value)  error,required TResult Function( _LogoutSuccess value)  logoutSuccess,required TResult Function( _PasswordChangeSuccess value)  passwordChangeSuccess,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Loaded value)  loaded,required TResult Function( _Error value)  error,required TResult Function( _LogoutSuccess value)  logoutSuccess,required TResult Function( _PasswordChangeSuccess value)  passwordChangeSuccess,required TResult Function( _DeleteAccountSuccess value)  deleteAccountSuccess,}){
 final _that = this;
 switch (_that) {
 case _Initial():
@@ -395,7 +434,8 @@ return loading(_that);case _Loaded():
 return loaded(_that);case _Error():
 return error(_that);case _LogoutSuccess():
 return logoutSuccess(_that);case _PasswordChangeSuccess():
-return passwordChangeSuccess(_that);case _:
+return passwordChangeSuccess(_that);case _DeleteAccountSuccess():
+return deleteAccountSuccess(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -412,7 +452,7 @@ return passwordChangeSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Error value)?  error,TResult? Function( _LogoutSuccess value)?  logoutSuccess,TResult? Function( _PasswordChangeSuccess value)?  passwordChangeSuccess,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Error value)?  error,TResult? Function( _LogoutSuccess value)?  logoutSuccess,TResult? Function( _PasswordChangeSuccess value)?  passwordChangeSuccess,TResult? Function( _DeleteAccountSuccess value)?  deleteAccountSuccess,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
@@ -421,7 +461,8 @@ return loading(_that);case _Loaded() when loaded != null:
 return loaded(_that);case _Error() when error != null:
 return error(_that);case _LogoutSuccess() when logoutSuccess != null:
 return logoutSuccess(_that);case _PasswordChangeSuccess() when passwordChangeSuccess != null:
-return passwordChangeSuccess(_that);case _:
+return passwordChangeSuccess(_that);case _DeleteAccountSuccess() when deleteAccountSuccess != null:
+return deleteAccountSuccess(_that);case _:
   return null;
 
 }
@@ -438,7 +479,7 @@ return passwordChangeSuccess(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( User user)?  loaded,TResult Function( String message)?  error,TResult Function()?  logoutSuccess,TResult Function()?  passwordChangeSuccess,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( User user)?  loaded,TResult Function( String message)?  error,TResult Function()?  logoutSuccess,TResult Function()?  passwordChangeSuccess,TResult Function()?  deleteAccountSuccess,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
@@ -446,7 +487,8 @@ return loading();case _Loaded() when loaded != null:
 return loaded(_that.user);case _Error() when error != null:
 return error(_that.message);case _LogoutSuccess() when logoutSuccess != null:
 return logoutSuccess();case _PasswordChangeSuccess() when passwordChangeSuccess != null:
-return passwordChangeSuccess();case _:
+return passwordChangeSuccess();case _DeleteAccountSuccess() when deleteAccountSuccess != null:
+return deleteAccountSuccess();case _:
   return orElse();
 
 }
@@ -464,7 +506,7 @@ return passwordChangeSuccess();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( User user)  loaded,required TResult Function( String message)  error,required TResult Function()  logoutSuccess,required TResult Function()  passwordChangeSuccess,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( User user)  loaded,required TResult Function( String message)  error,required TResult Function()  logoutSuccess,required TResult Function()  passwordChangeSuccess,required TResult Function()  deleteAccountSuccess,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
@@ -472,7 +514,8 @@ return loading();case _Loaded():
 return loaded(_that.user);case _Error():
 return error(_that.message);case _LogoutSuccess():
 return logoutSuccess();case _PasswordChangeSuccess():
-return passwordChangeSuccess();case _:
+return passwordChangeSuccess();case _DeleteAccountSuccess():
+return deleteAccountSuccess();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -489,7 +532,7 @@ return passwordChangeSuccess();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( User user)?  loaded,TResult? Function( String message)?  error,TResult? Function()?  logoutSuccess,TResult? Function()?  passwordChangeSuccess,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( User user)?  loaded,TResult? Function( String message)?  error,TResult? Function()?  logoutSuccess,TResult? Function()?  passwordChangeSuccess,TResult? Function()?  deleteAccountSuccess,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
@@ -497,7 +540,8 @@ return loading();case _Loaded() when loaded != null:
 return loaded(_that.user);case _Error() when error != null:
 return error(_that.message);case _LogoutSuccess() when logoutSuccess != null:
 return logoutSuccess();case _PasswordChangeSuccess() when passwordChangeSuccess != null:
-return passwordChangeSuccess();case _:
+return passwordChangeSuccess();case _DeleteAccountSuccess() when deleteAccountSuccess != null:
+return deleteAccountSuccess();case _:
   return null;
 
 }
@@ -766,6 +810,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'ProfileState.passwordChangeSuccess()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _DeleteAccountSuccess implements ProfileState {
+  const _DeleteAccountSuccess();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeleteAccountSuccess);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProfileState.deleteAccountSuccess()';
 }
 
 

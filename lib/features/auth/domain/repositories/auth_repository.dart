@@ -13,4 +13,11 @@ abstract class AuthRepository {
     required String email,
     required String confirmationCode,
   });
+  Future<void> resetPassword({required String email});
+  Future<void> confirmResetPassword({
+    required String email,
+    required String newPassword,
+    required String confirmationCode,
+  });
+  Future<void> deleteAccount();
 }
