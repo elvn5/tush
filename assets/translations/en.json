@@ -68,5 +68,9 @@
   "delete_dream": "Delete Dream",
   "delete_dream_confirmation": "Are you sure you want to delete this dream?",
   "dream_deleted": "Dream deleted",
-  "privacy_policy": "Privacy Policy"
+  "privacy_policy": "Privacy Policy",
+  "tap_to_record": "Tap to record your dream",
+  "listening": "Listening...",
+  "speech_not_available": "Speech recognition is not available",
+  "microphone_permission_denied": "Microphone permission denied"
 }

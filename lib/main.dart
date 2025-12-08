@@ -16,6 +16,7 @@ import 'dart:async';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tush/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:upgrader/upgrader.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -75,17 +76,19 @@ class Tush extends StatelessWidget {
       builder: (context, child) {
         return BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
-            return MaterialApp.router(
-              title: "Tush",
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              theme: AppTheme.light,
-              darkTheme: AppTheme.dark,
-              themeMode: themeMode,
-              routerConfig: _appRouter.config(
-                reevaluateListenable: StreamListenable(
-                  GetIt.I<AuthBloc>().stream,
+            return UpgradeAlert(
+              child: MaterialApp.router(
+                title: "Tush",
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
+                themeMode: themeMode,
+                routerConfig: _appRouter.config(
+                  reevaluateListenable: StreamListenable(
+                    GetIt.I<AuthBloc>().stream,
+                  ),
                 ),
               ),
             );
