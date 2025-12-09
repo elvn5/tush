@@ -24,12 +24,13 @@ class DreamsList extends StatelessWidget {
                 nextCursor,
                 hasReachedMax,
                 isLoadingMore,
-                p1,
-                p2,
-                p3,
-                p4,
-                p5,
-                p6,
+                searchQuery,
+                statusFilter,
+                startDateFilter,
+                endDateFilter,
+                isAdded,
+                isDeleted,
+                isSaving,
               ) {
                 if (dreams.isEmpty) {
                   return Center(
@@ -46,6 +47,7 @@ class DreamsList extends StatelessWidget {
                   },
                   child: ListView.builder(
                     controller: scrollController,
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: hasReachedMax
                         ? dreams.length
                         : dreams.length + 1,

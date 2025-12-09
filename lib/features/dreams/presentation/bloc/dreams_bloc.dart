@@ -38,6 +38,7 @@ abstract class DreamsState with _$DreamsState {
     DateTime? endDateFilter,
     @Default(false) bool isAdded,
     @Default(false) bool isDeleted,
+    @Default(false) bool isSaving,
   }) = _Loaded;
   const factory DreamsState.failure(String message) = _Failure;
 }
@@ -120,17 +121,26 @@ class DreamsBloc extends Bloc<DreamsEvent, DreamsState> {
 
     on<_Add>((event, emit) async {
       try {
+        // Set saving state
+        if (state is _Loaded) {
+          emit((state as _Loaded).copyWith(isSaving: true));
+        } else {
+          emit(const DreamsState.loaded(dreams: [], isSaving: true));
+        }
+
         await _dreamsRepository.saveDream(event.text);
 
-        // Optimistically update or just signal success
+        // Signal success
         if (state is _Loaded) {
-          emit((state as _Loaded).copyWith(isAdded: true));
-          // Reset isAdded after a frame or just let the refresh handle it?
-          // If we refresh, the new state will have isAdded: false (default).
+          emit((state as _Loaded).copyWith(isAdded: true, isSaving: false));
         }
 
         add(const _Refresh());
       } catch (e) {
+        // Reset saving state on error
+        if (state is _Loaded) {
+          emit((state as _Loaded).copyWith(isSaving: false));
+        }
         emit(_Failure(e.toString()));
       }
     });

@@ -722,12 +722,12 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<Dream> dreams,  String? nextCursor,  bool hasReachedMax,  bool isLoadingMore,  String? searchQuery,  bool? statusFilter,  DateTime? startDateFilter,  DateTime? endDateFilter,  bool isAdded,  bool isDeleted)?  loaded,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<Dream> dreams,  String? nextCursor,  bool hasReachedMax,  bool isLoadingMore,  String? searchQuery,  bool? statusFilter,  DateTime? startDateFilter,  DateTime? endDateFilter,  bool isAdded,  bool isDeleted,  bool isSaving)?  loaded,TResult Function( String message)?  failure,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
-return loaded(_that.dreams,_that.nextCursor,_that.hasReachedMax,_that.isLoadingMore,_that.searchQuery,_that.statusFilter,_that.startDateFilter,_that.endDateFilter,_that.isAdded,_that.isDeleted);case _Failure() when failure != null:
+return loaded(_that.dreams,_that.nextCursor,_that.hasReachedMax,_that.isLoadingMore,_that.searchQuery,_that.statusFilter,_that.startDateFilter,_that.endDateFilter,_that.isAdded,_that.isDeleted,_that.isSaving);case _Failure() when failure != null:
 return failure(_that.message);case _:
   return orElse();
 
@@ -746,12 +746,12 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<Dream> dreams,  String? nextCursor,  bool hasReachedMax,  bool isLoadingMore,  String? searchQuery,  bool? statusFilter,  DateTime? startDateFilter,  DateTime? endDateFilter,  bool isAdded,  bool isDeleted)  loaded,required TResult Function( String message)  failure,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<Dream> dreams,  String? nextCursor,  bool hasReachedMax,  bool isLoadingMore,  String? searchQuery,  bool? statusFilter,  DateTime? startDateFilter,  DateTime? endDateFilter,  bool isAdded,  bool isDeleted,  bool isSaving)  loaded,required TResult Function( String message)  failure,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case _Loaded():
-return loaded(_that.dreams,_that.nextCursor,_that.hasReachedMax,_that.isLoadingMore,_that.searchQuery,_that.statusFilter,_that.startDateFilter,_that.endDateFilter,_that.isAdded,_that.isDeleted);case _Failure():
+return loaded(_that.dreams,_that.nextCursor,_that.hasReachedMax,_that.isLoadingMore,_that.searchQuery,_that.statusFilter,_that.startDateFilter,_that.endDateFilter,_that.isAdded,_that.isDeleted,_that.isSaving);case _Failure():
 return failure(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -769,12 +769,12 @@ return failure(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<Dream> dreams,  String? nextCursor,  bool hasReachedMax,  bool isLoadingMore,  String? searchQuery,  bool? statusFilter,  DateTime? startDateFilter,  DateTime? endDateFilter,  bool isAdded,  bool isDeleted)?  loaded,TResult? Function( String message)?  failure,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<Dream> dreams,  String? nextCursor,  bool hasReachedMax,  bool isLoadingMore,  String? searchQuery,  bool? statusFilter,  DateTime? startDateFilter,  DateTime? endDateFilter,  bool isAdded,  bool isDeleted,  bool isSaving)?  loaded,TResult? Function( String message)?  failure,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
-return loaded(_that.dreams,_that.nextCursor,_that.hasReachedMax,_that.isLoadingMore,_that.searchQuery,_that.statusFilter,_that.startDateFilter,_that.endDateFilter,_that.isAdded,_that.isDeleted);case _Failure() when failure != null:
+return loaded(_that.dreams,_that.nextCursor,_that.hasReachedMax,_that.isLoadingMore,_that.searchQuery,_that.statusFilter,_that.startDateFilter,_that.endDateFilter,_that.isAdded,_that.isDeleted,_that.isSaving);case _Failure() when failure != null:
 return failure(_that.message);case _:
   return null;
 
@@ -851,7 +851,7 @@ String toString() {
 
 
 class _Loaded implements DreamsState {
-  const _Loaded({required final  List<Dream> dreams, this.nextCursor, this.hasReachedMax = false, this.isLoadingMore = false, this.searchQuery, this.statusFilter, this.startDateFilter, this.endDateFilter, this.isAdded = false, this.isDeleted = false}): _dreams = dreams;
+  const _Loaded({required final  List<Dream> dreams, this.nextCursor, this.hasReachedMax = false, this.isLoadingMore = false, this.searchQuery, this.statusFilter, this.startDateFilter, this.endDateFilter, this.isAdded = false, this.isDeleted = false, this.isSaving = false}): _dreams = dreams;
   
 
  final  List<Dream> _dreams;
@@ -870,6 +870,7 @@ class _Loaded implements DreamsState {
  final  DateTime? endDateFilter;
 @JsonKey() final  bool isAdded;
 @JsonKey() final  bool isDeleted;
+@JsonKey() final  bool isSaving;
 
 /// Create a copy of DreamsState
 /// with the given fields replaced by the non-null parameter values.
@@ -881,16 +882,16 @@ _$LoadedCopyWith<_Loaded> get copyWith => __$LoadedCopyWithImpl<_Loaded>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&const DeepCollectionEquality().equals(other._dreams, _dreams)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.hasReachedMax, hasReachedMax) || other.hasReachedMax == hasReachedMax)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.statusFilter, statusFilter) || other.statusFilter == statusFilter)&&(identical(other.startDateFilter, startDateFilter) || other.startDateFilter == startDateFilter)&&(identical(other.endDateFilter, endDateFilter) || other.endDateFilter == endDateFilter)&&(identical(other.isAdded, isAdded) || other.isAdded == isAdded)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&const DeepCollectionEquality().equals(other._dreams, _dreams)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.hasReachedMax, hasReachedMax) || other.hasReachedMax == hasReachedMax)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.searchQuery, searchQuery) || other.searchQuery == searchQuery)&&(identical(other.statusFilter, statusFilter) || other.statusFilter == statusFilter)&&(identical(other.startDateFilter, startDateFilter) || other.startDateFilter == startDateFilter)&&(identical(other.endDateFilter, endDateFilter) || other.endDateFilter == endDateFilter)&&(identical(other.isAdded, isAdded) || other.isAdded == isAdded)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.isSaving, isSaving) || other.isSaving == isSaving));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_dreams),nextCursor,hasReachedMax,isLoadingMore,searchQuery,statusFilter,startDateFilter,endDateFilter,isAdded,isDeleted);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_dreams),nextCursor,hasReachedMax,isLoadingMore,searchQuery,statusFilter,startDateFilter,endDateFilter,isAdded,isDeleted,isSaving);
 
 @override
 String toString() {
-  return 'DreamsState.loaded(dreams: $dreams, nextCursor: $nextCursor, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore, searchQuery: $searchQuery, statusFilter: $statusFilter, startDateFilter: $startDateFilter, endDateFilter: $endDateFilter, isAdded: $isAdded, isDeleted: $isDeleted)';
+  return 'DreamsState.loaded(dreams: $dreams, nextCursor: $nextCursor, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore, searchQuery: $searchQuery, statusFilter: $statusFilter, startDateFilter: $startDateFilter, endDateFilter: $endDateFilter, isAdded: $isAdded, isDeleted: $isDeleted, isSaving: $isSaving)';
 }
 
 
@@ -901,7 +902,7 @@ abstract mixin class _$LoadedCopyWith<$Res> implements $DreamsStateCopyWith<$Res
   factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) = __$LoadedCopyWithImpl;
 @useResult
 $Res call({
- List<Dream> dreams, String? nextCursor, bool hasReachedMax, bool isLoadingMore, String? searchQuery, bool? statusFilter, DateTime? startDateFilter, DateTime? endDateFilter, bool isAdded, bool isDeleted
+ List<Dream> dreams, String? nextCursor, bool hasReachedMax, bool isLoadingMore, String? searchQuery, bool? statusFilter, DateTime? startDateFilter, DateTime? endDateFilter, bool isAdded, bool isDeleted, bool isSaving
 });
 
 
@@ -918,7 +919,7 @@ class __$LoadedCopyWithImpl<$Res>
 
 /// Create a copy of DreamsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? dreams = null,Object? nextCursor = freezed,Object? hasReachedMax = null,Object? isLoadingMore = null,Object? searchQuery = freezed,Object? statusFilter = freezed,Object? startDateFilter = freezed,Object? endDateFilter = freezed,Object? isAdded = null,Object? isDeleted = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? dreams = null,Object? nextCursor = freezed,Object? hasReachedMax = null,Object? isLoadingMore = null,Object? searchQuery = freezed,Object? statusFilter = freezed,Object? startDateFilter = freezed,Object? endDateFilter = freezed,Object? isAdded = null,Object? isDeleted = null,Object? isSaving = null,}) {
   return _then(_Loaded(
 dreams: null == dreams ? _self._dreams : dreams // ignore: cast_nullable_to_non_nullable
 as List<Dream>,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
@@ -930,6 +931,7 @@ as bool?,startDateFilter: freezed == startDateFilter ? _self.startDateFilter : s
 as DateTime?,endDateFilter: freezed == endDateFilter ? _self.endDateFilter : endDateFilter // ignore: cast_nullable_to_non_nullable
 as DateTime?,isAdded: null == isAdded ? _self.isAdded : isAdded // ignore: cast_nullable_to_non_nullable
 as bool,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as bool,isSaving: null == isSaving ? _self.isSaving : isSaving // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

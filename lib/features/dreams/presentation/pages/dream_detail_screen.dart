@@ -33,6 +33,7 @@ class DreamDetailScreen extends StatelessWidget {
                   endDateFilter,
                   isAdded,
                   isDeleted,
+                  isSaving,
                 ) {
                   if (isDeleted) {
                     context.router.pop(true);
@@ -51,15 +52,7 @@ class DreamDetailScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text('your_dream'.tr()),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => _showDeleteConfirmation(context),
-                ),
-              ],
-            ),
+            appBar: AppBar(title: Text('your_dream'.tr())),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(

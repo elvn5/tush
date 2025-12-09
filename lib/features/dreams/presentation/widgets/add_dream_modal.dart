@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -106,23 +105,26 @@ class AddDreamModal extends HookWidget {
               const SizedBox(height: 16),
               BlocBuilder<DreamsBloc, DreamsState>(
                 builder: (context, state) {
+                  final isSaving =
+                      state.mapOrNull(loaded: (s) => s.isSaving) ?? false;
                   return AppButton(
                     text: 'save_dream'.tr(),
-                    isLoading: state.maybeWhen(
-                      loading: () => true,
-                      orElse: () => false,
-                    ),
-                    onPressed: () {
-                      if (formKey.currentState?.saveAndValidate() ?? false) {
-                        final dreamText =
-                            formKey.currentState?.value['dream'] as String?;
-                        if (dreamText != null && dreamText.isNotEmpty) {
-                          context.read<DreamsBloc>().add(
-                            DreamsEvent.add(dreamText),
-                          );
-                        }
-                      }
-                    },
+                    isLoading: isSaving,
+                    onPressed: isSaving
+                        ? null
+                        : () {
+                            if (formKey.currentState?.saveAndValidate() ??
+                                false) {
+                              final dreamText =
+                                  formKey.currentState?.value['dream']
+                                      as String?;
+                              if (dreamText != null && dreamText.isNotEmpty) {
+                                context.read<DreamsBloc>().add(
+                                  DreamsEvent.add(dreamText),
+                                );
+                              }
+                            }
+                          },
                   );
                 },
               ),

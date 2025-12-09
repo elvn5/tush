@@ -78,7 +78,7 @@ class Tush extends StatelessWidget {
           builder: (context, themeMode) {
             return UpgradeAlert(
               child: MaterialApp.router(
-                title: "Tush",
+                title: "Morpheus",
                 localizationsDelegates: context.localizationDelegates,
                 supportedLocales: context.supportedLocales,
                 locale: context.locale,

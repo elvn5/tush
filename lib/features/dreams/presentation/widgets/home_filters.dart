@@ -29,6 +29,7 @@ class HomeFilters extends StatelessWidget {
                       endDateFilter,
                       isAdded,
                       isDeleted,
+                      isSaving,
                     ) {
                       final hasDateFilter =
                           startDateFilter != null || endDateFilter != null;

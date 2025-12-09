@@ -42,6 +42,8 @@ Presentation: BLoCs, Pages, Widgets.
 
 Repository Pattern: Always use Repositories to abstract data fetching. BLoCs strictly talk to Repositories/UseCases, never directly to Dio or GraphQL.
 
+Always use named arguments
+
 2. Library-Specific Implementation Rules
 
 A. State Management (flutter_bloc + freezed)
