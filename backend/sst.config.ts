@@ -20,7 +20,7 @@ export default $config({
     });
 
     table.subscribe("InterpretDream", {
-      handler: "src/interpret.handler",
+      handler: "src/features/dreams/interpret.handler",
       link: [table],
       environment: {
         GEMINI_API_KEY: process.env.GEMINI_API_KEY || "",
@@ -67,7 +67,7 @@ export default $config({
     });
 
     // 6. Add Routes
-    api.route("POST /dreams", "src/create.handler", {
+    api.route("POST /dreams", "src/features/dreams/create.handler", {
       auth: {
         jwt: {
           authorizer: authorizer.id,
@@ -75,7 +75,7 @@ export default $config({
       },
     });
 
-    api.route("GET /dreams", "src/list.handler", {
+    api.route("GET /dreams", "src/features/dreams/list.handler", {
       auth: {
         jwt: {
           authorizer: authorizer.id,
@@ -83,7 +83,7 @@ export default $config({
       },
     });
 
-    api.route("PUT /dreams/{id}", "src/update.handler", {
+    api.route("PUT /dreams/{id}", "src/features/dreams/update.handler", {
       auth: {
         jwt: {
           authorizer: authorizer.id,
@@ -91,7 +91,7 @@ export default $config({
       },
     });
 
-    api.route("DELETE /dreams/{id}", "src/delete.handler", {
+    api.route("DELETE /dreams/{id}", "src/features/dreams/delete.handler", {
       auth: {
         jwt: {
           authorizer: authorizer.id,
