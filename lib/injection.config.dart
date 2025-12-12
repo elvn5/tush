@@ -34,6 +34,14 @@ import 'features/auth/presentation/bloc/sign_up_bloc.dart' as _i572;
 import 'features/dreams/data/repositories/dreams_repository_impl.dart' as _i881;
 import 'features/dreams/domain/repositories/dreams_repository.dart' as _i324;
 import 'features/dreams/presentation/bloc/dreams_bloc.dart' as _i687;
+import 'features/friends/data/repositories/friends_repository_impl.dart'
+    as _i987;
+import 'features/friends/domain/repositories/friends_repository.dart' as _i1042;
+import 'features/friends/domain/usecases/add_friend_use_case.dart' as _i545;
+import 'features/friends/domain/usecases/get_friends_use_case.dart' as _i195;
+import 'features/friends/domain/usecases/remove_friend_use_case.dart' as _i878;
+import 'features/friends/domain/usecases/search_users_use_case.dart' as _i738;
+import 'features/friends/presentation/bloc/friends_bloc.dart' as _i707;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -69,6 +77,29 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i324.DreamsRepository>(
       () => _i881.DreamsRepositoryImpl(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i1042.FriendsRepository>(
+      () => _i987.FriendsRepositoryImpl(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i545.AddFriendUseCase>(
+      () => _i545.AddFriendUseCase(gh<_i1042.FriendsRepository>()),
+    );
+    gh.lazySingleton<_i195.GetFriendsUseCase>(
+      () => _i195.GetFriendsUseCase(gh<_i1042.FriendsRepository>()),
+    );
+    gh.lazySingleton<_i878.RemoveFriendUseCase>(
+      () => _i878.RemoveFriendUseCase(gh<_i1042.FriendsRepository>()),
+    );
+    gh.lazySingleton<_i738.SearchUsersUseCase>(
+      () => _i738.SearchUsersUseCase(gh<_i1042.FriendsRepository>()),
+    );
+    gh.factory<_i707.FriendsBloc>(
+      () => _i707.FriendsBloc(
+        gh<_i738.SearchUsersUseCase>(),
+        gh<_i545.AddFriendUseCase>(),
+        gh<_i195.GetFriendsUseCase>(),
+        gh<_i878.RemoveFriendUseCase>(),
+      ),
     );
     gh.factory<_i572.SignUpBloc>(
       () => _i572.SignUpBloc(

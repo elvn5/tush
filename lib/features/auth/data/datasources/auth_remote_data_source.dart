@@ -7,7 +7,12 @@ import '../../domain/entities/user.dart';
 import '../../domain/exceptions/auth_exceptions.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<void> signUp({required String email, required String password});
+  Future<void> signUp({
+    required String email,
+    required String password,
+    String? firstName,
+    String? lastName,
+  });
   Future<void> signIn({required String email, required String password});
   Future<User?> getCurrentUser();
   Future<void> signOut();
@@ -31,14 +36,26 @@ abstract class AuthRemoteDataSource {
 @LazySingleton(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
-  Future<void> signUp({required String email, required String password}) async {
+  Future<void> signUp({
+    required String email,
+    required String password,
+    String? firstName,
+    String? lastName,
+  }) async {
     try {
+      final userAttributes = <AuthUserAttributeKey, String>{
+        AuthUserAttributeKey.email: email,
+      };
+      if (firstName != null && firstName.isNotEmpty) {
+        userAttributes[AuthUserAttributeKey.givenName] = firstName;
+      }
+      if (lastName != null && lastName.isNotEmpty) {
+        userAttributes[AuthUserAttributeKey.familyName] = lastName;
+      }
       final result = await Amplify.Auth.signUp(
         username: email,
         password: password,
-        options: SignUpOptions(
-          userAttributes: {AuthUserAttributeKey.email: email},
-        ),
+        options: SignUpOptions(userAttributes: userAttributes),
       );
       safePrint('Sign up result: $result');
     } on AuthException catch (e) {

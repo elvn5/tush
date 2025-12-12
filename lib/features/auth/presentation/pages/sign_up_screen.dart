@@ -75,6 +75,20 @@ class _SignUpForm extends HookWidget {
                   AppBodyLarge(text: 'sign_up_started'.tr()),
                   const Gap(32),
                   AppFormBuilderTextField(
+                    name: 'firstName',
+                    label: 'first_name'.tr(),
+                    hint: 'enter_first_name'.tr(),
+                    prefixIcon: const Icon(Icons.person_outline),
+                  ),
+                  const Gap(16),
+                  AppFormBuilderTextField(
+                    name: 'lastName',
+                    label: 'last_name'.tr(),
+                    hint: 'enter_last_name'.tr(),
+                    prefixIcon: const Icon(Icons.person_outline),
+                  ),
+                  const Gap(16),
+                  AppFormBuilderTextField(
                     name: 'email',
                     label: 'email'.tr(),
                     hint: 'enter_email'.tr(),
@@ -129,6 +143,8 @@ class _SignUpForm extends HookWidget {
                             SignUpEvent.submit(
                               email: values['email'],
                               password: values['password'],
+                              firstName: values['firstName'],
+                              lastName: values['lastName'],
                             ),
                           );
                         }

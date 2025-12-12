@@ -10,7 +10,12 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
-      routes: const [HomeRoute(), ProfileRoute(), SettingsRoute()],
+      routes: const [
+        HomeRoute(),
+        ProfileRoute(),
+        FriendsRoute(),
+        SettingsRoute(),
+      ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return BottomAppBar(
           shape: const CircularNotchedRectangle(),
@@ -45,13 +50,25 @@ class DashboardScreen extends StatelessWidget {
               IconButton(
                 icon: Icon(
                   tabsRouter.activeIndex == 2
-                      ? Icons.settings
-                      : Icons.settings_outlined,
+                      ? Icons.people
+                      : Icons.people_outline,
                   color: tabsRouter.activeIndex == 2
                       ? Theme.of(context).colorScheme.primary
                       : null,
                 ),
                 onPressed: () => tabsRouter.setActiveIndex(2),
+                tooltip: 'friends'.tr(context: context),
+              ),
+              IconButton(
+                icon: Icon(
+                  tabsRouter.activeIndex == 3
+                      ? Icons.settings
+                      : Icons.settings_outlined,
+                  color: tabsRouter.activeIndex == 3
+                      ? Theme.of(context).colorScheme.primary
+                      : null,
+                ),
+                onPressed: () => tabsRouter.setActiveIndex(3),
                 tooltip: 'settings'.tr(context: context),
               ),
             ],

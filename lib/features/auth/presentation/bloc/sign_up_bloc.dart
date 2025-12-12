@@ -11,6 +11,8 @@ abstract class SignUpEvent with _$SignUpEvent {
   const factory SignUpEvent.submit({
     required String email,
     required String password,
+    String? firstName,
+    String? lastName,
   }) = _Submit;
   const factory SignUpEvent.confirm({
     required String email,
@@ -37,7 +39,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<_Submit>((event, emit) async {
       emit(const _Loading());
       try {
-        await _signUpUseCase(email: event.email, password: event.password);
+        await _signUpUseCase(
+          email: event.email,
+          password: event.password,
+          firstName: event.firstName,
+          lastName: event.lastName,
+        );
         // Assuming auto-login after sign up, or user needs to sign in?
         // Usually SignUp just creates account. If it auto-logs in, we dispatch LoginSuccess.
         // If it requires verification or separate login, we don't.

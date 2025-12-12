@@ -153,10 +153,10 @@ return confirm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password)?  submit,TResult Function( String email,  String code)?  confirm,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password,  String? firstName,  String? lastName)?  submit,TResult Function( String email,  String code)?  confirm,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Submit() when submit != null:
-return submit(_that.email,_that.password);case _Confirm() when confirm != null:
+return submit(_that.email,_that.password,_that.firstName,_that.lastName);case _Confirm() when confirm != null:
 return confirm(_that.email,_that.code);case _:
   return orElse();
 
@@ -175,10 +175,10 @@ return confirm(_that.email,_that.code);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password)  submit,required TResult Function( String email,  String code)  confirm,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password,  String? firstName,  String? lastName)  submit,required TResult Function( String email,  String code)  confirm,}) {final _that = this;
 switch (_that) {
 case _Submit():
-return submit(_that.email,_that.password);case _Confirm():
+return submit(_that.email,_that.password,_that.firstName,_that.lastName);case _Confirm():
 return confirm(_that.email,_that.code);case _:
   throw StateError('Unexpected subclass');
 
@@ -196,10 +196,10 @@ return confirm(_that.email,_that.code);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password)?  submit,TResult? Function( String email,  String code)?  confirm,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password,  String? firstName,  String? lastName)?  submit,TResult? Function( String email,  String code)?  confirm,}) {final _that = this;
 switch (_that) {
 case _Submit() when submit != null:
-return submit(_that.email,_that.password);case _Confirm() when confirm != null:
+return submit(_that.email,_that.password,_that.firstName,_that.lastName);case _Confirm() when confirm != null:
 return confirm(_that.email,_that.code);case _:
   return null;
 
@@ -212,11 +212,13 @@ return confirm(_that.email,_that.code);case _:
 
 
 class _Submit implements SignUpEvent {
-  const _Submit({required this.email, required this.password});
+  const _Submit({required this.email, required this.password, this.firstName, this.lastName});
   
 
 @override final  String email;
  final  String password;
+ final  String? firstName;
+ final  String? lastName;
 
 /// Create a copy of SignUpEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -228,16 +230,16 @@ _$SubmitCopyWith<_Submit> get copyWith => __$SubmitCopyWithImpl<_Submit>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Submit&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Submit&&(identical(other.email, email) || other.email == email)&&(identical(other.password, password) || other.password == password)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,email,password);
+int get hashCode => Object.hash(runtimeType,email,password,firstName,lastName);
 
 @override
 String toString() {
-  return 'SignUpEvent.submit(email: $email, password: $password)';
+  return 'SignUpEvent.submit(email: $email, password: $password, firstName: $firstName, lastName: $lastName)';
 }
 
 
@@ -248,7 +250,7 @@ abstract mixin class _$SubmitCopyWith<$Res> implements $SignUpEventCopyWith<$Res
   factory _$SubmitCopyWith(_Submit value, $Res Function(_Submit) _then) = __$SubmitCopyWithImpl;
 @override @useResult
 $Res call({
- String email, String password
+ String email, String password, String? firstName, String? lastName
 });
 
 
@@ -265,11 +267,13 @@ class __$SubmitCopyWithImpl<$Res>
 
 /// Create a copy of SignUpEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password = null,Object? firstName = freezed,Object? lastName = freezed,}) {
   return _then(_Submit(
 email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
-as String,
+as String,firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
+as String?,lastName: freezed == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

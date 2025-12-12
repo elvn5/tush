@@ -1,4 +1,4 @@
 class AppConfig {
   static const String apiUrl =
-      'https://ir6jad1sec.execute-api.eu-north-1.amazonaws.com';
+      'https://900zaj5ru8.execute-api.eu-north-1.amazonaws.com';
 }

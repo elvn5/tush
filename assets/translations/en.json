@@ -72,5 +72,19 @@
   "tap_to_record": "Tap to record your dream",
   "listening": "Listening...",
   "speech_not_available": "Speech recognition is not available",
-  "microphone_permission_denied": "Microphone permission denied"
+  "microphone_permission_denied": "Microphone permission denied",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "enter_first_name": "Enter your first name",
+  "enter_last_name": "Enter your last name",
+  "friends": "Friends",
+  "no_friends_yet": "No friends yet",
+  "search_friends_hint": "Search by email...",
+  "no_users_found": "No users found",
+  "add_friend": "Add friend",
+  "friend_added": "Friend added successfully",
+  "search": "Search",
+  "my_friends": "My Friends",
+  "remove_friend": "Remove friend",
+  "friend_removed": "Friend removed"
 }

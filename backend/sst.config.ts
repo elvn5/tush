@@ -27,6 +27,15 @@ export default $config({
       },
     });
 
+    // Friends DynamoDB Table
+    const friendsTable = new sst.aws.Dynamo("Friends", {
+      fields: {
+        userId: "string",
+        friendId: "string",
+      },
+      primaryIndex: { hashKey: "userId", rangeKey: "friendId" },
+    });
+
     // 2. Create Cognito User Pool
     const userPool = new sst.aws.CognitoUserPool("UserPool", {
       transform: {
@@ -92,6 +101,77 @@ export default $config({
     });
 
     api.route("DELETE /dreams/{id}", "src/features/dreams/delete.handler", {
+      auth: {
+        jwt: {
+          authorizer: authorizer.id,
+        },
+      },
+    });
+
+    // User Search Route
+    const searchUsersHandler = new sst.aws.Function("SearchUsers", {
+      handler: "src/features/users/search-users.handler",
+      environment: {
+        USER_POOL_ID: userPool.id,
+      },
+      permissions: [
+        {
+          actions: ["cognito-idp:ListUsers"],
+          resources: [userPool.nodes.userPool.arn],
+        },
+      ],
+    });
+
+    api.route("GET /users/search", searchUsersHandler.arn, {
+      auth: {
+        jwt: {
+          authorizer: authorizer.id,
+        },
+      },
+    });
+
+    // Friend Routes
+    const addFriendHandler = new sst.aws.Function("AddFriend", {
+      handler: "src/features/friends/add-friend.handler",
+      link: [friendsTable],
+    });
+
+    api.route("POST /friends", addFriendHandler.arn, {
+      auth: {
+        jwt: {
+          authorizer: authorizer.id,
+        },
+      },
+    });
+
+    const listFriendsHandler = new sst.aws.Function("ListFriends", {
+      handler: "src/features/friends/list-friends.handler",
+      link: [friendsTable],
+      environment: {
+        USER_POOL_ID: userPool.id,
+      },
+      permissions: [
+        {
+          actions: ["cognito-idp:AdminGetUser"],
+          resources: [userPool.nodes.userPool.arn],
+        },
+      ],
+    });
+
+    api.route("GET /friends", listFriendsHandler.arn, {
+      auth: {
+        jwt: {
+          authorizer: authorizer.id,
+        },
+      },
+    });
+
+    const deleteFriendHandler = new sst.aws.Function("DeleteFriend", {
+      handler: "src/features/friends/delete-friend.handler",
+      link: [friendsTable],
+    });
+
+    api.route("DELETE /friends/{id}", deleteFriendHandler.arn, {
       auth: {
         jwt: {
           authorizer: authorizer.id,

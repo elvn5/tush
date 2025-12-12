@@ -5,13 +5,33 @@
 
 declare module "sst" {
   export interface Resource {
+    "AddFriend": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
     "Api": {
       "type": "sst.aws.ApiGatewayV2"
       "url": string
     }
+    "DeleteFriend": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
     "Dreams": {
       "name": string
       "type": "sst.aws.Dynamo"
+    }
+    "Friends": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
+    "ListFriends": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
+    "SearchUsers": {
+      "name": string
+      "type": "sst.aws.Function"
     }
     "UserPool": {
       "id": string

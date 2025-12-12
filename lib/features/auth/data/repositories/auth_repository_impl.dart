@@ -10,8 +10,18 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<void> signUp({required String email, required String password}) async {
-    return _remoteDataSource.signUp(email: email, password: password);
+  Future<void> signUp({
+    required String email,
+    required String password,
+    String? firstName,
+    String? lastName,
+  }) async {
+    return _remoteDataSource.signUp(
+      email: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+    );
   }
 
   @override
