@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tush/core/presentation/widgets/widgets.dart';
+import 'package:tush/routes/app_router.gr.dart';
 import '../bloc/friends_bloc.dart';
 
 @RoutePage()
@@ -264,6 +265,15 @@ class _MyFriendsTab extends HookWidget {
                           );
                         },
                       ),
+                      onTap: () {
+                        context.router.push(
+                          FriendDreamsRoute(
+                            friendId: friend.id,
+                            friendName: friend.name ?? '',
+                            friendEmail: friend.email,
+                          ),
+                        );
+                      },
                     ),
                   );
                 },

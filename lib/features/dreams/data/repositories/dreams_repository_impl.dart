@@ -76,6 +76,45 @@ class DreamsRepositoryImpl implements DreamsRepository {
   }
 
   @override
+  Future<PaginatedDreams> getFriendDreams({
+    required String friendId,
+    int limit = 10,
+    String? cursor,
+  }) async {
+    try {
+      final String apiUrl = '${AppConfig.apiUrl}/friends/$friendId/dreams';
+      final queryParameters = {
+        'limit': limit,
+        if (cursor != null) 'cursor': cursor,
+      };
+
+      final response = await _dio.get(apiUrl, queryParameters: queryParameters);
+
+      if (response.statusCode == 200) {
+        final dynamic responseData = response.data;
+        final Map<String, dynamic> data;
+        if (responseData is String) {
+          data = jsonDecode(responseData) as Map<String, dynamic>;
+        } else {
+          data = responseData as Map<String, dynamic>;
+        }
+
+        final items = (data['items'] as List<dynamic>)
+            .map((json) => DreamDTO.fromJson(json).toDomain())
+            .toList();
+        final nextCursor = data['nextCursor'] as String?;
+
+        return PaginatedDreams(items: items, nextCursor: nextCursor);
+      } else {
+        throw Exception('Failed to load friend dreams');
+      }
+    } catch (e) {
+      safePrint('Error fetching friend dreams: $e');
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> deleteDream(String id) async {
     try {
       final String apiUrl = '${AppConfig.apiUrl}/dreams/$id';

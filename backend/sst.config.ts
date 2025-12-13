@@ -36,6 +36,15 @@ export default $config({
       primaryIndex: { hashKey: "userId", rangeKey: "friendId" },
     });
 
+    // Friend Requests DynamoDB Table (for pending requests)
+    const friendRequestsTable = new sst.aws.Dynamo("FriendRequests", {
+      fields: {
+        recipientId: "string",
+        senderId: "string",
+      },
+      primaryIndex: { hashKey: "recipientId", rangeKey: "senderId" },
+    });
+
     // 2. Create Cognito User Pool
     const userPool = new sst.aws.CognitoUserPool("UserPool", {
       transform: {
@@ -133,7 +142,7 @@ export default $config({
     // Friend Routes
     const addFriendHandler = new sst.aws.Function("AddFriend", {
       handler: "src/features/friends/add-friend.handler",
-      link: [friendsTable],
+      link: [friendsTable, friendRequestsTable],
     });
 
     api.route("POST /friends", addFriendHandler.arn, {
@@ -178,6 +187,85 @@ export default $config({
         },
       },
     });
+
+    const getFriendDreamsHandler = new sst.aws.Function("GetFriendDreams", {
+      handler: "src/features/friends/get-friend-dreams.handler",
+      link: [friendsTable, table],
+    });
+
+    api.route("GET /friends/{id}/dreams", getFriendDreamsHandler.arn, {
+      auth: {
+        jwt: {
+          authorizer: authorizer.id,
+        },
+      },
+    });
+
+    // Friend Request Routes
+    const listFriendRequestsHandler = new sst.aws.Function(
+      "ListFriendRequests",
+      {
+        handler: "src/features/friends/list-friend-requests.handler",
+        link: [friendRequestsTable],
+        environment: {
+          USER_POOL_ID: userPool.id,
+        },
+        permissions: [
+          {
+            actions: ["cognito-idp:AdminGetUser"],
+            resources: [userPool.nodes.userPool.arn],
+          },
+        ],
+      }
+    );
+
+    api.route("GET /friend-requests", listFriendRequestsHandler.arn, {
+      auth: {
+        jwt: {
+          authorizer: authorizer.id,
+        },
+      },
+    });
+
+    const acceptFriendRequestHandler = new sst.aws.Function(
+      "AcceptFriendRequest",
+      {
+        handler: "src/features/friends/accept-friend-request.handler",
+        link: [friendRequestsTable, friendsTable],
+      }
+    );
+
+    api.route(
+      "POST /friend-requests/{id}/accept",
+      acceptFriendRequestHandler.arn,
+      {
+        auth: {
+          jwt: {
+            authorizer: authorizer.id,
+          },
+        },
+      }
+    );
+
+    const declineFriendRequestHandler = new sst.aws.Function(
+      "DeclineFriendRequest",
+      {
+        handler: "src/features/friends/decline-friend-request.handler",
+        link: [friendRequestsTable],
+      }
+    );
+
+    api.route(
+      "POST /friend-requests/{id}/decline",
+      declineFriendRequestHandler.arn,
+      {
+        auth: {
+          jwt: {
+            authorizer: authorizer.id,
+          },
+        },
+      }
+    );
 
     // 7. Outputs
     return {

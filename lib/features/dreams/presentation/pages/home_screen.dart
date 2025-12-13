@@ -11,6 +11,7 @@ import 'package:tush/features/dreams/presentation/widgets/add_dream_modal.dart';
 import 'package:tush/core/presentation/widgets/widgets.dart';
 import 'package:tush/features/dreams/presentation/widgets/dreams_list.dart';
 import 'package:tush/features/dreams/presentation/widgets/home_filters.dart';
+import 'package:tush/features/friends/presentation/widgets/friend_requests_modal.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
@@ -63,6 +64,13 @@ class _HomeView extends HookWidget {
           return Scaffold(
             appBar: AppBar(
               title: AppTitleMedium(text: 'home'.tr(context: context)),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.notifications_outlined),
+                  tooltip: 'friend_requests'.tr(),
+                  onPressed: () => FriendRequestsModal.show(context),
+                ),
+              ],
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),

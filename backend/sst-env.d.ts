@@ -5,6 +5,10 @@
 
 declare module "sst" {
   export interface Resource {
+    "AcceptFriendRequest": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
     "AddFriend": {
       "name": string
       "type": "sst.aws.Function"
@@ -12,6 +16,10 @@ declare module "sst" {
     "Api": {
       "type": "sst.aws.ApiGatewayV2"
       "url": string
+    }
+    "DeclineFriendRequest": {
+      "name": string
+      "type": "sst.aws.Function"
     }
     "DeleteFriend": {
       "name": string
@@ -21,9 +29,21 @@ declare module "sst" {
       "name": string
       "type": "sst.aws.Dynamo"
     }
+    "FriendRequests": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
     "Friends": {
       "name": string
       "type": "sst.aws.Dynamo"
+    }
+    "GetFriendDreams": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
+    "ListFriendRequests": {
+      "name": string
+      "type": "sst.aws.Function"
     }
     "ListFriends": {
       "name": string

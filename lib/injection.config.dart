@@ -34,6 +34,8 @@ import 'features/auth/presentation/bloc/sign_up_bloc.dart' as _i572;
 import 'features/dreams/data/repositories/dreams_repository_impl.dart' as _i881;
 import 'features/dreams/domain/repositories/dreams_repository.dart' as _i324;
 import 'features/dreams/presentation/bloc/dreams_bloc.dart' as _i687;
+import 'features/friends/data/repositories/friend_requests_repository.dart'
+    as _i54;
 import 'features/friends/data/repositories/friends_repository_impl.dart'
     as _i987;
 import 'features/friends/domain/repositories/friends_repository.dart' as _i1042;
@@ -41,6 +43,7 @@ import 'features/friends/domain/usecases/add_friend_use_case.dart' as _i545;
 import 'features/friends/domain/usecases/get_friends_use_case.dart' as _i195;
 import 'features/friends/domain/usecases/remove_friend_use_case.dart' as _i878;
 import 'features/friends/domain/usecases/search_users_use_case.dart' as _i738;
+import 'features/friends/presentation/bloc/friend_requests_bloc.dart' as _i1022;
 import 'features/friends/presentation/bloc/friends_bloc.dart' as _i707;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -81,6 +84,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1042.FriendsRepository>(
       () => _i987.FriendsRepositoryImpl(gh<_i361.Dio>()),
     );
+    gh.lazySingleton<_i54.FriendRequestsRepository>(
+      () => _i54.FriendRequestsRepositoryImpl(gh<_i361.Dio>()),
+    );
     gh.lazySingleton<_i545.AddFriendUseCase>(
       () => _i545.AddFriendUseCase(gh<_i1042.FriendsRepository>()),
     );
@@ -115,6 +121,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i930.ProfileBloc>(
       () => _i930.ProfileBloc(gh<_i1015.AuthRepository>()),
+    );
+    gh.factory<_i1022.FriendRequestsBloc>(
+      () => _i1022.FriendRequestsBloc(gh<_i54.FriendRequestsRepository>()),
     );
     gh.factory<_i687.DreamsBloc>(
       () => _i687.DreamsBloc(gh<_i324.DreamsRepository>()),

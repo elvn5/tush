@@ -52,27 +52,70 @@ export const handler = async (event: any) => {
       };
     }
 
-    const now = Date.now();
-
-    // Add friend relationship (both directions for easy querying)
-    await dynamoDb.send(
-      new PutCommand({
-        TableName: Resource.Friends.name,
-        Item: {
-          userId,
-          friendId,
-          createdAt: now,
-        },
+    // Check if request already exists
+    const existingRequest = await dynamoDb.send(
+      new GetCommand({
+        TableName: Resource.FriendRequests.name,
+        Key: { recipientId: friendId, senderId: userId },
       })
     );
 
-    // Add reverse relationship
+    if (existingRequest.Item) {
+      return {
+        statusCode: 409,
+        body: JSON.stringify({ error: "Friend request already sent" }),
+      };
+    }
+
+    // Check if there's a pending request from the other user (auto-accept)
+    const reverseRequest = await dynamoDb.send(
+      new GetCommand({
+        TableName: Resource.FriendRequests.name,
+        Key: { recipientId: userId, senderId: friendId },
+      })
+    );
+
+    if (reverseRequest.Item) {
+      // Auto-accept: they already sent us a request, so just become friends
+      const now = Date.now();
+
+      // Create bidirectional friendship
+      await dynamoDb.send(
+        new PutCommand({
+          TableName: Resource.Friends.name,
+          Item: { userId, friendId, createdAt: now },
+        })
+      );
+      await dynamoDb.send(
+        new PutCommand({
+          TableName: Resource.Friends.name,
+          Item: { userId: friendId, friendId: userId, createdAt: now },
+        })
+      );
+
+      // Delete the pending request
+      const { DeleteCommand } = await import("@aws-sdk/lib-dynamodb");
+      await dynamoDb.send(
+        new DeleteCommand({
+          TableName: Resource.FriendRequests.name,
+          Key: { recipientId: userId, senderId: friendId },
+        })
+      );
+
+      return {
+        statusCode: 201,
+        body: JSON.stringify({ message: "Friend added successfully" }),
+      };
+    }
+
+    // Create a pending friend request
+    const now = Date.now();
     await dynamoDb.send(
       new PutCommand({
-        TableName: Resource.Friends.name,
+        TableName: Resource.FriendRequests.name,
         Item: {
-          userId: friendId,
-          friendId: userId,
+          recipientId: friendId,
+          senderId: userId,
           createdAt: now,
         },
       })
@@ -80,13 +123,13 @@ export const handler = async (event: any) => {
 
     return {
       statusCode: 201,
-      body: JSON.stringify({ message: "Friend added successfully" }),
+      body: JSON.stringify({ message: "Friend request sent" }),
     };
   } catch (error) {
     console.error("Error adding friend:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Could not add friend" }),
+      body: JSON.stringify({ error: "Could not send friend request" }),
     };
   }
 };

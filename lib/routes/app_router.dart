@@ -25,6 +25,7 @@ class AppRouter extends RootStackRouter {
       ],
     ),
     AutoRoute(page: DreamDetailRoute.page),
+    AutoRoute(page: FriendDreamsRoute.page),
     AutoRoute(page: PrivacyPolicyRoute.page, path: '/privacy-policy'),
   ];
 }

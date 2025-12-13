@@ -86,5 +86,16 @@
   "search": "Search",
   "my_friends": "My Friends",
   "remove_friend": "Remove friend",
-  "friend_removed": "Friend removed"
+  "friend_removed": "Friend removed",
+  "friend_dreams": "Dreams",
+  "no_friend_dreams": "This friend has no dreams yet",
+  "error_loading_dreams": "Error loading dreams",
+  "retry": "Retry",
+  "friend_requests": "Friend Requests",
+  "no_friend_requests": "No friend requests",
+  "friend_request_accepted": "Friend request accepted",
+  "friend_request_declined": "Friend request declined",
+  "friend_request_sent": "Friend request sent",
+  "accept": "Accept",
+  "decline": "Decline"
 }
