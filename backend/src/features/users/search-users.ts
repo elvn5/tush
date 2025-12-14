@@ -45,9 +45,10 @@ export const handler = async (event: any) => {
     const response = await cognitoClient.send(command);
 
     const users = (response.Users || [])
-      .filter((user: UserType) => user.Username !== userId)
       .map((user: UserType) => {
         const attributes: AttributeType[] = user.Attributes || [];
+        const sub =
+          attributes.find((a) => a.Name === "sub")?.Value || user.Username;
         const email = attributes.find((a) => a.Name === "email")?.Value || "";
         const givenName =
           attributes.find((a) => a.Name === "given_name")?.Value || "";
@@ -59,11 +60,12 @@ export const handler = async (event: any) => {
             : undefined;
 
         return {
-          id: user.Username,
+          id: sub,
           email,
           name,
         };
-      });
+      })
+      .filter((user) => user.id !== userId);
 
     return {
       statusCode: 200,

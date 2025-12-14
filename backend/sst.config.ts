@@ -161,7 +161,7 @@ export default $config({
       },
       permissions: [
         {
-          actions: ["cognito-idp:AdminGetUser"],
+          actions: ["cognito-idp:AdminGetUser", "cognito-idp:ListUsers"],
           resources: [userPool.nodes.userPool.arn],
         },
       ],
@@ -212,7 +212,7 @@ export default $config({
         },
         permissions: [
           {
-            actions: ["cognito-idp:AdminGetUser"],
+            actions: ["cognito-idp:AdminGetUser", "cognito-idp:ListUsers"],
             resources: [userPool.nodes.userPool.arn],
           },
         ],

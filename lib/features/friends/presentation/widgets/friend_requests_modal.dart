@@ -168,6 +168,42 @@ class FriendRequestsModal extends StatelessWidget {
                           },
                         );
                       },
+                      error: (message) => Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              size: 64,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            const Gap(16),
+                            AppBodyLarge(text: 'error_loading'.tr()),
+                            const Gap(8),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: Text(
+                                message,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                              ),
+                            ),
+                            const Gap(16),
+                            ElevatedButton(
+                              onPressed: () {
+                                context.read<FriendRequestsBloc>().add(
+                                  const FriendRequestsEvent.load(),
+                                );
+                              },
+                              child: Text('retry'.tr()),
+                            ),
+                          ],
+                        ),
+                      ),
                       orElse: () => const SizedBox.shrink(),
                     );
                   },

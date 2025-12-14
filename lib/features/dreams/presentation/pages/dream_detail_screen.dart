@@ -97,11 +97,62 @@ class DreamDetailScreen extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         config: MarkdownConfig(
                           configs: [
+                            PConfig(textStyle: const TextStyle(fontSize: 14)),
+                            H1Config(
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            H2Config(
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            H3Config(
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            H4Config(
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            H5Config(
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            H6Config(
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            ListConfig(
+                              marker: (isOrdered, depth, index) => Text(
+                                isOrdered ? '${index + 1}.' : '•',
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ),
+                            PreConfig(textStyle: const TextStyle(fontSize: 14)),
+                            CodeConfig(style: const TextStyle(fontSize: 14)),
+                            BlockquoteConfig(
+                              textColor: Theme.of(
+                                context,
+                              ).colorScheme.onSurface,
+                            ),
                             TableConfig(
                               wrapper: (child) => SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: child,
                               ),
+                              bodyStyle: const TextStyle(fontSize: 14),
                             ),
                           ],
                         ),

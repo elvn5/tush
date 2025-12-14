@@ -30,6 +30,8 @@ export const handler = async (event: any) => {
   }
 
   try {
+    console.log("Listing friend requests for userId:", userId);
+
     // Get pending friend requests where current user is the recipient
     const result = await dynamoDb.send(
       new QueryCommand({
@@ -40,6 +42,8 @@ export const handler = async (event: any) => {
         },
       })
     );
+
+    console.log("DynamoDB query result:", JSON.stringify(result.Items));
 
     const senderIds = (result.Items || []).map((item) => item.senderId);
 
@@ -54,14 +58,25 @@ export const handler = async (event: any) => {
     const requests = await Promise.all(
       senderIds.map(async (senderId: string) => {
         try {
-          const user = await cognitoClient.send(
-            new AdminGetUserCommand({
+          // Use ListUsersCommand with sub filter since Username might be email
+          const { ListUsersCommand } = await import(
+            "@aws-sdk/client-cognito-identity-provider"
+          );
+          const listResult = await cognitoClient.send(
+            new ListUsersCommand({
               UserPoolId: userPoolId,
-              Username: senderId,
+              Filter: `sub = "${senderId}"`,
+              Limit: 1,
             })
           );
 
-          const attributes: AttributeType[] = user.UserAttributes || [];
+          const user = listResult.Users?.[0];
+          if (!user) {
+            console.log(`User not found for senderId: ${senderId}`);
+            return null;
+          }
+
+          const attributes: AttributeType[] = user.Attributes || [];
           const email = attributes.find((a) => a.Name === "email")?.Value || "";
           const givenName =
             attributes.find((a) => a.Name === "given_name")?.Value || "";
@@ -77,11 +92,14 @@ export const handler = async (event: any) => {
             email,
             name,
           };
-        } catch {
+        } catch (error) {
+          console.error(`Error fetching user ${senderId}:`, error);
           return null;
         }
       })
     );
+
+    console.log("Requests:", JSON.stringify(requests));
 
     return {
       statusCode: 200,

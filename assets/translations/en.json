@@ -97,5 +97,6 @@
   "friend_request_declined": "Friend request declined",
   "friend_request_sent": "Friend request sent",
   "accept": "Accept",
-  "decline": "Decline"
+  "decline": "Decline",
+  "error_loading": "Error loading"
 }

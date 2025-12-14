@@ -55,14 +55,25 @@ export const handler = async (event: any) => {
     const friends = await Promise.all(
       friendIds.map(async (friendId: string) => {
         try {
-          const user = await cognitoClient.send(
-            new AdminGetUserCommand({
+          // Use ListUsersCommand with sub filter since Username might be email
+          const { ListUsersCommand } = await import(
+            "@aws-sdk/client-cognito-identity-provider"
+          );
+          const listResult = await cognitoClient.send(
+            new ListUsersCommand({
               UserPoolId: userPoolId,
-              Username: friendId,
+              Filter: `sub = "${friendId}"`,
+              Limit: 1,
             })
           );
 
-          const attributes: AttributeType[] = user.UserAttributes || [];
+          const user = listResult.Users?.[0];
+          if (!user) {
+            console.log(`User not found for friendId: ${friendId}`);
+            return null;
+          }
+
+          const attributes: AttributeType[] = user.Attributes || [];
           const email = attributes.find((a) => a.Name === "email")?.Value || "";
           const givenName =
             attributes.find((a) => a.Name === "given_name")?.Value || "";
@@ -78,7 +89,8 @@ export const handler = async (event: any) => {
             email,
             name,
           };
-        } catch {
+        } catch (error) {
+          console.error(`Error fetching friend ${friendId}:`, error);
           return null;
         }
       })

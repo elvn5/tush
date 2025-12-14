@@ -11,6 +11,7 @@ import 'package:tush/features/dreams/presentation/widgets/add_dream_modal.dart';
 import 'package:tush/core/presentation/widgets/widgets.dart';
 import 'package:tush/features/dreams/presentation/widgets/dreams_list.dart';
 import 'package:tush/features/dreams/presentation/widgets/home_filters.dart';
+import 'package:tush/features/friends/presentation/bloc/friend_requests_bloc.dart';
 import 'package:tush/features/friends/presentation/widgets/friend_requests_modal.dart';
 
 @RoutePage()
@@ -19,8 +20,15 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetIt.I<DreamsBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => GetIt.I<DreamsBloc>()),
+        BlocProvider(
+          create: (context) =>
+              GetIt.I<FriendRequestsBloc>()
+                ..add(const FriendRequestsEvent.load()),
+        ),
+      ],
       child: const _HomeView(),
     );
   }
@@ -63,12 +71,40 @@ class _HomeView extends HookWidget {
         builder: (context) {
           return Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               title: AppTitleMedium(text: 'home'.tr(context: context)),
               actions: [
-                IconButton(
-                  icon: const Icon(Icons.notifications_outlined),
-                  tooltip: 'friend_requests'.tr(),
-                  onPressed: () => FriendRequestsModal.show(context),
+                BlocBuilder<FriendRequestsBloc, FriendRequestsState>(
+                  builder: (context, state) {
+                    final count = state.maybeWhen(
+                      loaded: (requests) => requests.length,
+                      orElse: () => 0,
+                    );
+                    return IconButton(
+                      icon: Badge(
+                        isLabelVisible: count > 0,
+                        label: Text(count.toString()),
+                        child: const Icon(Icons.notifications_outlined),
+                      ),
+                      tooltip: 'friend_requests'.tr(),
+                      onPressed: () async {
+                        await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (modalContext) => BlocProvider.value(
+                            value: context.read<FriendRequestsBloc>(),
+                            child: const FriendRequestsModal(),
+                          ),
+                        );
+                        // Refresh count after modal closes
+                        if (context.mounted) {
+                          context.read<FriendRequestsBloc>().add(
+                            const FriendRequestsEvent.load(),
+                          );
+                        }
+                      },
+                    );
+                  },
                 ),
               ],
             ),

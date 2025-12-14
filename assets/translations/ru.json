@@ -97,5 +97,6 @@
   "friend_request_declined": "Заявка отклонена",
   "friend_request_sent": "Заявка отправлена",
   "accept": "Принять",
-  "decline": "Отклонить"
+  "decline": "Отклонить",
+  "error_loading": "Ошибка загрузки"
 }

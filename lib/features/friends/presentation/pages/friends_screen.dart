@@ -35,9 +35,9 @@ class _FriendsBody extends HookWidget {
           friendAdded: () {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text('friend_added'.tr())));
-            // Refresh friends list after adding
-            context.read<FriendsBloc>().add(const FriendsEvent.loadFriends());
+            ).showSnackBar(SnackBar(content: Text('friend_request_sent'.tr())));
+            // Clear search after sending request
+            context.read<FriendsBloc>().add(const FriendsEvent.clearSearch());
           },
           friendRemoved: () {
             ScaffoldMessenger.of(

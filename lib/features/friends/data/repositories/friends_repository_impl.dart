@@ -55,7 +55,10 @@ class FriendsRepositoryImpl implements FriendsRepository {
   Future<void> addFriend({required String friendId}) async {
     try {
       final String apiUrl = '${AppConfig.apiUrl}/friends';
-      await _dio.post(apiUrl, data: {'friendId': friendId});
+      safePrint('Adding friend with ID: $friendId');
+      final response = await _dio.post(apiUrl, data: {'friendId': friendId});
+      safePrint('Add friend response status: ${response.statusCode}');
+      safePrint('Add friend response data: ${response.data}');
     } catch (e) {
       safePrint('Error adding friend: $e');
       rethrow;
