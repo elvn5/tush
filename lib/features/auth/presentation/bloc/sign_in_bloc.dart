@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../../domain/usecases/sign_in_use_case.dart';
 import '../../domain/exceptions/auth_exceptions.dart';
 import 'auth_bloc.dart';
+import '../../../../core/services/analytics_service.dart';
 
 part 'sign_in_bloc.freezed.dart';
 
@@ -28,13 +29,19 @@ abstract class SignInState with _$SignInState {
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final SignInUseCase _signInUseCase;
   final AuthBloc _authBloc;
+  final AnalyticsService _analyticsService;
 
-  SignInBloc(this._signInUseCase, this._authBloc) : super(const _Initial()) {
+  SignInBloc(this._signInUseCase, this._authBloc, this._analyticsService)
+    : super(const _Initial()) {
     on<_Submit>((event, emit) async {
       emit(const _Loading());
       try {
         await _signInUseCase(email: event.email, password: event.password);
         _authBloc.add(const AuthEvent.loginSuccess());
+
+        // Track analytics
+        await _analyticsService.trackLogin(method: 'email');
+
         emit(const _Success());
       } on UserNotConfirmedDomainException catch (_) {
         emit(const _UserNotConfirmed());

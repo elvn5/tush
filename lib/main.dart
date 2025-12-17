@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'routes/app_router.dart';
 import 'injection.dart';
 import 'package:tush/core/presentation/theme/app_theme.dart';
@@ -27,6 +28,9 @@ void main() async {
       (await getApplicationDocumentsDirectory()).path,
     ),
   );
+
+  // Initialize Firebase before anything else
+  await Firebase.initializeApp();
 
   configureDependencies();
   await _configureAmplify();

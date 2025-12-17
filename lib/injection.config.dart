@@ -10,12 +10,14 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i361;
+import 'package:firebase_analytics/firebase_analytics.dart' as _i398;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
 import 'core/di/network_module.dart' as _i177;
 import 'core/network/auth_interceptor.dart' as _i8;
 import 'core/presentation/bloc/theme_cubit.dart' as _i1050;
+import 'core/services/analytics_service.dart' as _i661;
 import 'features/auth/data/datasources/auth_remote_data_source.dart' as _i767;
 import 'features/auth/data/repositories/auth_repository_impl.dart' as _i111;
 import 'features/auth/domain/repositories/auth_repository.dart' as _i1015;
@@ -45,6 +47,7 @@ import 'features/friends/domain/usecases/remove_friend_use_case.dart' as _i878;
 import 'features/friends/domain/usecases/search_users_use_case.dart' as _i738;
 import 'features/friends/presentation/bloc/friend_requests_bloc.dart' as _i1022;
 import 'features/friends/presentation/bloc/friends_bloc.dart' as _i707;
+import 'injection.dart' as _i464;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -53,12 +56,16 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    final firebaseModule = _$FirebaseModule();
     final networkModule = _$NetworkModule();
     gh.factory<_i8.AuthInterceptor>(() => _i8.AuthInterceptor());
     gh.factory<_i1050.ThemeCubit>(() => _i1050.ThemeCubit());
-    gh.lazySingleton<_i363.AuthBloc>(() => _i363.AuthBloc());
+    gh.lazySingleton<_i398.FirebaseAnalytics>(() => firebaseModule.analytics);
     gh.lazySingleton<_i767.AuthRemoteDataSource>(
       () => _i767.AuthRemoteDataSourceImpl(),
+    );
+    gh.lazySingleton<_i661.AnalyticsService>(
+      () => _i661.AnalyticsService(gh<_i398.FirebaseAnalytics>()),
     );
     gh.lazySingleton<_i1015.AuthRepository>(
       () => _i111.AuthRepositoryImpl(gh<_i767.AuthRemoteDataSource>()),
@@ -75,11 +82,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(gh<_i8.AuthInterceptor>()),
     );
-    gh.factory<_i457.SignInBloc>(
-      () => _i457.SignInBloc(gh<_i558.SignInUseCase>(), gh<_i363.AuthBloc>()),
-    );
     gh.lazySingleton<_i324.DreamsRepository>(
       () => _i881.DreamsRepositoryImpl(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i363.AuthBloc>(
+      () => _i363.AuthBloc(gh<_i661.AnalyticsService>()),
     );
     gh.lazySingleton<_i1042.FriendsRepository>(
       () => _i987.FriendsRepositoryImpl(gh<_i361.Dio>()),
@@ -107,10 +114,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i878.RemoveFriendUseCase>(),
       ),
     );
+    gh.factory<_i457.SignInBloc>(
+      () => _i457.SignInBloc(
+        gh<_i558.SignInUseCase>(),
+        gh<_i363.AuthBloc>(),
+        gh<_i661.AnalyticsService>(),
+      ),
+    );
     gh.factory<_i572.SignUpBloc>(
       () => _i572.SignUpBloc(
         gh<_i477.SignUpUseCase>(),
         gh<_i1006.ConfirmSignUpUseCase>(),
+        gh<_i661.AnalyticsService>(),
       ),
     );
     gh.lazySingleton<_i820.ConfirmResetPasswordUseCase>(
@@ -126,7 +141,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1022.FriendRequestsBloc(gh<_i54.FriendRequestsRepository>()),
     );
     gh.factory<_i687.DreamsBloc>(
-      () => _i687.DreamsBloc(gh<_i324.DreamsRepository>()),
+      () => _i687.DreamsBloc(
+        gh<_i324.DreamsRepository>(),
+        gh<_i661.AnalyticsService>(),
+      ),
     );
     gh.factory<_i806.ResetPasswordBloc>(
       () => _i806.ResetPasswordBloc(gh<_i820.ConfirmResetPasswordUseCase>()),
@@ -137,5 +155,7 @@ extension GetItInjectableX on _i174.GetIt {
     return this;
   }
 }
+
+class _$FirebaseModule extends _i464.FirebaseModule {}
 
 class _$NetworkModule extends _i177.NetworkModule {}

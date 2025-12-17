@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import '../../domain/entities/dream.dart';
 import '../../domain/repositories/dreams_repository.dart';
+import '../../../../core/services/analytics_service.dart';
 
 part 'dreams_bloc.freezed.dart';
 
@@ -46,8 +47,10 @@ abstract class DreamsState with _$DreamsState {
 @injectable
 class DreamsBloc extends Bloc<DreamsEvent, DreamsState> {
   final DreamsRepository _dreamsRepository;
+  final AnalyticsService _analyticsService;
 
-  DreamsBloc(this._dreamsRepository) : super(const _Initial()) {
+  DreamsBloc(this._dreamsRepository, this._analyticsService)
+    : super(const _Initial()) {
     on<_Started>((event, emit) async {
       emit(const _Loading());
       await _loadDreams(emit);
@@ -130,6 +133,9 @@ class DreamsBloc extends Bloc<DreamsEvent, DreamsState> {
 
         await _dreamsRepository.saveDream(event.text);
 
+        // Track analytics
+        await _analyticsService.trackDreamCreated();
+
         // Signal success
         if (state is _Loaded) {
           emit((state as _Loaded).copyWith(isAdded: true, isSaving: false));
@@ -148,6 +154,10 @@ class DreamsBloc extends Bloc<DreamsEvent, DreamsState> {
     on<_Delete>((event, emit) async {
       try {
         await _dreamsRepository.deleteDream(event.id);
+
+        // Track analytics
+        await _analyticsService.trackDreamDeleted(dreamId: event.id);
+
         if (state is _Loaded) {
           emit((state as _Loaded).copyWith(isDeleted: true));
         } else {
@@ -180,6 +190,11 @@ class DreamsBloc extends Bloc<DreamsEvent, DreamsState> {
         status: statusFilter,
         startDate: startDateFilter,
         endDate: endDateFilter,
+      );
+
+      // Track analytics for viewing dreams
+      await _analyticsService.trackDreamsViewed(
+        count: paginatedDreams.items.length,
       );
 
       emit(

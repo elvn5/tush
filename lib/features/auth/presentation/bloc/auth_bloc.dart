@@ -2,6 +2,7 @@ import 'package:amplify_flutter/amplify_flutter.dart' hide Emitter;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
+import '../../../../core/services/analytics_service.dart';
 
 part 'auth_bloc.freezed.dart';
 
@@ -21,7 +22,9 @@ class AuthState with _$AuthState {
 
 @lazySingleton
 class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
-  AuthBloc() : super(const _Initial()) {
+  final AnalyticsService _analyticsService;
+
+  AuthBloc(this._analyticsService) : super(const _Initial()) {
     on<_CheckRequested>(_onCheckRequested);
     on<_LoginSuccess>(_onLoginSuccess);
     on<_LogoutRequested>(_onLogoutRequested);
@@ -53,6 +56,10 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
   ) async {
     try {
       await Amplify.Auth.signOut();
+
+      // Track analytics
+      await _analyticsService.trackLogout();
+
       emit(const _Unauthenticated());
     } catch (_) {
       emit(const _Unauthenticated());
