@@ -110,7 +110,12 @@ export const handler = async (event: any) => {
       }),
     };
   } catch (error) {
-    console.error(error);
+    console.error("Error retrieving dreams:", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      userId,
+      params: JSON.stringify(params),
+    });
     return {
       statusCode: 500,
       body: JSON.stringify({ error: "Could not retrieve dreams" }),

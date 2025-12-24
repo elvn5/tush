@@ -1,7 +1,7 @@
 .PHONY: up dev deploy
 
 up:
-	dart tool/startup.dart $(if $(stage),--stage $(stage),)
+	dart tool/startup.dart --stage $(if $(stage),$(stage),dev)
 
 dev: up
 

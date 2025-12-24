@@ -98,5 +98,6 @@
   "friend_request_sent": "Заявка отправлена",
   "accept": "Принять",
   "decline": "Отклонить",
-  "error_loading": "Ошибка загрузки"
+  "error_loading": "Ошибка загрузки",
+  "share": "Поделиться"
 }
