@@ -68,6 +68,7 @@
   "delete_dream": "Удалить сон",
   "delete_dream_confirmation": "Вы уверены, что хотите удалить этот сон?",
   "dream_deleted": "Сон удален",
+  "dream_deleted_successfully": "Сон успешно удален",
   "privacy_policy": "Политика конфиденциальности",
   "tap_to_record": "Нажмите, чтобы записать ваш сон",
   "listening": "Слушаю...",

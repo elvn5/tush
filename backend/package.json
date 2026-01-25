@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "sst dev",
+    "dev": "concurrently \"npm:dev:sst\" \"npm:dev:watch\"",
+    "dev:sst": "sst dev --stage dev",
+    "dev:watch": "tsx scripts/watch-and-update.ts",
     "deploy": "sst deploy",
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
     "update-flutter-config": "tsx scripts/update-flutter-config.ts",
+    "check-stage": "tsx scripts/check-stage.ts",
     "postdeploy": "npm run update-flutter-config"
   },
   "devDependencies": {
@@ -17,6 +20,7 @@
     "@types/node": "^20.12.7",
     "@types/uuid": "^9.0.8",
     "aws-cdk-lib": "2.142.1",
+    "concurrently": "^9.1.2",
     "constructs": "10.3.0",
     "sst": "^3.0.0",
     "ts-node": "^10.9.2",

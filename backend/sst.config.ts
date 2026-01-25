@@ -216,7 +216,7 @@ export default $config({
             resources: [userPool.nodes.userPool.arn],
           },
         ],
-      }
+      },
     );
 
     api.route("GET /friend-requests", listFriendRequestsHandler.arn, {
@@ -232,7 +232,7 @@ export default $config({
       {
         handler: "src/features/friends/accept-friend-request.handler",
         link: [friendRequestsTable, friendsTable],
-      }
+      },
     );
 
     api.route(
@@ -244,7 +244,7 @@ export default $config({
             authorizer: authorizer.id,
           },
         },
-      }
+      },
     );
 
     const declineFriendRequestHandler = new sst.aws.Function(
@@ -252,7 +252,7 @@ export default $config({
       {
         handler: "src/features/friends/decline-friend-request.handler",
         link: [friendRequestsTable],
-      }
+      },
     );
 
     api.route(
@@ -264,7 +264,7 @@ export default $config({
             authorizer: authorizer.id,
           },
         },
-      }
+      },
     );
 
     // 7. Outputs

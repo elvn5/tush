@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tush/features/dreams/presentation/bloc/dreams_bloc.dart';
 import 'package:tush/features/dreams/presentation/widgets/add_dream_modal.dart';
 import 'package:tush/core/presentation/widgets/widgets.dart';
@@ -57,11 +58,39 @@ class _HomeView extends HookWidget {
     return BlocListener<DreamsBloc, DreamsState>(
       listener: (context, state) {
         state.maybeWhen(
+          loaded:
+              (
+                dreams,
+                nextCursor,
+                hasReachedMax,
+                isLoadingMore,
+                searchQuery,
+                statusFilter,
+                startDateFilter,
+                endDateFilter,
+                isAdded,
+                isDeleted,
+                isSaving,
+              ) {
+                if (isDeleted) {
+                  Fluttertoast.showToast(
+                    msg: 'dream_deleted_successfully'.tr(),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  );
+                }
+              },
           failure: (message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: AppBodyMedium(text: message, color: Colors.white),
-              ),
+            Fluttertoast.showToast(
+              msg: message,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0,
             );
           },
           orElse: () {},

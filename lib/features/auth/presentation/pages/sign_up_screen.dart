@@ -37,6 +37,7 @@ class _SignUpForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final formKey = useMemoized(() => GlobalKey<FormBuilderState>());
+    final isPasswordVisible = useState(false);
 
     return BlocConsumer<SignUpBloc, SignUpState>(
       listener: (context, state) {
@@ -109,7 +110,17 @@ class _SignUpForm extends HookWidget {
                     label: 'password'.tr(),
                     hint: 'enter_password'.tr(),
                     prefixIcon: const Icon(Icons.lock_outline),
-                    obscureText: true,
+                    obscureText: !isPasswordVisible.value,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible.value
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
+                      onPressed: () {
+                        isPasswordVisible.value = !isPasswordVisible.value;
+                      },
+                    ),
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
                         errorText: 'please_enter_password'.tr(),
