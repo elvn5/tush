@@ -1,8 +1,8 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import 'package:tush/core/config/app_config.dart';
+import 'package:tush/core/services/token_storage.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/exceptions/auth_exceptions.dart';
 
@@ -35,6 +35,11 @@ abstract class AuthRemoteDataSource {
 
 @LazySingleton(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+  final Dio _dio;
+  final TokenStorage _tokenStorage;
+
+  AuthRemoteDataSourceImpl(this._dio, this._tokenStorage);
+
   @override
   Future<void> signUp({
     required String email,
@@ -42,96 +47,70 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     String? firstName,
     String? lastName,
   }) async {
+    String? name;
+    if (firstName != null && firstName.isNotEmpty) {
+      name = [firstName, if (lastName != null && lastName.isNotEmpty) lastName]
+          .join(' ');
+    }
+
     try {
-      final userAttributes = <AuthUserAttributeKey, String>{
-        AuthUserAttributeKey.email: email,
-      };
-      if (firstName != null && firstName.isNotEmpty) {
-        userAttributes[AuthUserAttributeKey.givenName] = firstName;
-      }
-      if (lastName != null && lastName.isNotEmpty) {
-        userAttributes[AuthUserAttributeKey.familyName] = lastName;
-      }
-      final result = await Amplify.Auth.signUp(
-        username: email,
-        password: password,
-        options: SignUpOptions(userAttributes: userAttributes),
+      await _dio.post(
+        '${AppConfig.apiUrl}/auth/register',
+        data: {'email': email, 'password': password, 'name': name},
+        options: Options(headers: {}),
       );
-      safePrint('Sign up result: $result');
-    } on AuthException catch (e) {
-      safePrint('Error signing up user: ${e.message}');
-      rethrow;
+    } on DioException catch (e) {
+      throw _mapDioError(e);
     }
   }
 
   @override
   Future<void> signIn({required String email, required String password}) async {
     try {
-      final result = await Amplify.Auth.signIn(
-        username: email,
-        password: password,
+      final response = await _dio.post(
+        '${AppConfig.apiUrl}/auth/login',
+        data: {'email': email, 'password': password},
+        options: Options(headers: {}),
       );
-      safePrint('Sign in result: $result');
 
-      if (result.nextStep.signInStep == AuthSignInStep.confirmSignUp) {
-        throw UserNotConfirmedDomainException('User is not confirmed.');
+      final token = response.data['token'] as String;
+      await _tokenStorage.saveToken(token);
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 403) {
+        final error = e.response?.data['error'] as String? ?? '';
+        if (error == 'user_not_confirmed') {
+          throw UserNotConfirmedDomainException('User is not confirmed.');
+        }
       }
-
-      // Ensure the session is fetched and cached
-      await Amplify.Auth.fetchAuthSession();
-    } on UserNotConfirmedException catch (e) {
-      safePrint('User not confirmed: ${e.message}');
-      throw UserNotConfirmedDomainException(e.message);
-    } on AuthException catch (e) {
-      safePrint('Error signing in user: ${e.message}');
-      rethrow;
+      throw _mapDioError(e);
     }
   }
 
   @override
   Future<User?> getCurrentUser() async {
+    final token = await _tokenStorage.getToken();
+    if (token == null) return null;
+
     try {
-      final session = await Amplify.Auth.fetchAuthSession();
-      if (!session.isSignedIn) {
+      final response = await _dio.get('${AppConfig.apiUrl}/auth/me');
+      final data = response.data as Map<String, dynamic>;
+      return User(
+        id: data['id'] as String,
+        email: data['email'] as String,
+        name: data['name'] as String?,
+      );
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        await _tokenStorage.deleteToken();
         return null;
       }
-      final attributes = await Amplify.Auth.fetchUserAttributes();
-      final userId = await Amplify.Auth.getCurrentUser();
-      String email = '';
-      String? name;
-      String? phoneNumber;
-
-      for (final attribute in attributes) {
-        if (attribute.userAttributeKey == AuthUserAttributeKey.email) {
-          email = attribute.value;
-        } else if (attribute.userAttributeKey == AuthUserAttributeKey.name) {
-          name = attribute.value;
-        } else if (attribute.userAttributeKey ==
-            AuthUserAttributeKey.phoneNumber) {
-          phoneNumber = attribute.value;
-        }
-      }
-
-      return User(
-        id: userId.userId,
-        email: email,
-        name: name,
-        phoneNumber: phoneNumber,
-      );
-    } catch (e) {
-      safePrint('Error fetching user: $e');
       return null;
     }
   }
 
   @override
   Future<void> signOut() async {
-    try {
-      await Amplify.Auth.signOut();
-    } on AuthException catch (e) {
-      safePrint('Error signing out: ${e.message}');
-      rethrow;
-    }
+    await _tokenStorage.deleteToken();
   }
 
   @override
@@ -140,13 +119,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String newPassword,
   }) async {
     try {
-      await Amplify.Auth.updatePassword(
-        oldPassword: oldPassword,
-        newPassword: newPassword,
+      await _dio.put(
+        '${AppConfig.apiUrl}/auth/password',
+        data: {'old_password': oldPassword, 'new_password': newPassword},
       );
-    } on AuthException catch (e) {
-      safePrint('Error changing password: ${e.message}');
-      rethrow;
+    } on DioException catch (e) {
+      throw _mapDioError(e);
     }
   }
 
@@ -156,25 +134,26 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String confirmationCode,
   }) async {
     try {
-      final result = await Amplify.Auth.confirmSignUp(
-        username: email,
-        confirmationCode: confirmationCode,
+      await _dio.post(
+        '${AppConfig.apiUrl}/auth/confirm',
+        data: {'email': email, 'code': confirmationCode},
+        options: Options(headers: {}),
       );
-      safePrint('Confirm sign up result: $result');
-    } on AuthException catch (e) {
-      safePrint('Error confirming sign up: ${e.message}');
-      rethrow;
+    } on DioException catch (e) {
+      throw _mapDioError(e);
     }
   }
 
   @override
   Future<void> resetPassword({required String email}) async {
     try {
-      final result = await Amplify.Auth.resetPassword(username: email);
-      safePrint('Reset password result: $result');
-    } on AuthException catch (e) {
-      safePrint('Error resetting password: ${e.message}');
-      rethrow;
+      await _dio.post(
+        '${AppConfig.apiUrl}/auth/forgot-password',
+        data: {'email': email},
+        options: Options(headers: {}),
+      );
+    } on DioException catch (e) {
+      throw _mapDioError(e);
     }
   }
 
@@ -185,25 +164,32 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String confirmationCode,
   }) async {
     try {
-      final result = await Amplify.Auth.confirmResetPassword(
-        username: email,
-        newPassword: newPassword,
-        confirmationCode: confirmationCode,
+      await _dio.post(
+        '${AppConfig.apiUrl}/auth/reset-password',
+        data: {
+          'email': email,
+          'code': confirmationCode,
+          'new_password': newPassword,
+        },
+        options: Options(headers: {}),
       );
-      safePrint('Confirm reset password result: $result');
-    } on AuthException catch (e) {
-      safePrint('Error confirming reset password: ${e.message}');
-      rethrow;
+    } on DioException catch (e) {
+      throw _mapDioError(e);
     }
   }
 
   @override
   Future<void> deleteAccount() async {
     try {
-      await Amplify.Auth.deleteUser();
-    } on AuthException catch (e) {
-      safePrint('Error deleting account: ${e.message}');
-      rethrow;
+      await _dio.delete('${AppConfig.apiUrl}/auth/me');
+      await _tokenStorage.deleteToken();
+    } on DioException catch (e) {
+      throw _mapDioError(e);
     }
+  }
+
+  Exception _mapDioError(DioException e) {
+    final message = e.response?.data?['error'] as String?;
+    return Exception(message ?? e.message ?? 'Unknown error');
   }
 }

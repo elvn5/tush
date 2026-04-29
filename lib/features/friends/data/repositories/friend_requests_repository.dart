@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tush/core/config/app_config.dart';
@@ -22,8 +22,8 @@ class FriendRequestsRepositoryImpl implements FriendRequestsRepository {
     try {
       final response = await _dio.get('${AppConfig.apiUrl}/friend-requests');
 
-      safePrint('Friend requests response status: ${response.statusCode}');
-      safePrint('Friend requests response data: ${response.data}');
+      debugPrint('Friend requests response status: ${response.statusCode}');
+      debugPrint('Friend requests response data: ${response.data}');
 
       if (response.statusCode == 200) {
         final dynamic responseData = response.data;
@@ -34,7 +34,7 @@ class FriendRequestsRepositoryImpl implements FriendRequestsRepository {
           data = responseData as Map<String, dynamic>;
         }
 
-        safePrint('Parsed friend requests data: $data');
+        debugPrint('Parsed friend requests data: $data');
 
         final requests = (data['requests'] as List<dynamic>)
             .map(
@@ -46,13 +46,13 @@ class FriendRequestsRepositoryImpl implements FriendRequestsRepository {
             )
             .toList();
 
-        safePrint('Parsed ${requests.length} friend requests');
+        debugPrint('Parsed ${requests.length} friend requests');
         return requests;
       } else {
         throw Exception('Failed to load friend requests');
       }
     } catch (e) {
-      safePrint('Error getting friend requests: $e');
+      debugPrint('Error getting friend requests: $e');
       rethrow;
     }
   }

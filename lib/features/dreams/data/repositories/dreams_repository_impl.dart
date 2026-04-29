@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tush/features/dreams/data/models/dream_dto.dart';
@@ -24,7 +24,7 @@ class DreamsRepositoryImpl implements DreamsRepository {
 
       await _dio.post(apiUrl, data: {'title': title, 'dream': text});
     } catch (e) {
-      safePrint('Error saving dream: $e');
+      debugPrint('Error saving dream: $e');
       rethrow;
     }
   }
@@ -70,7 +70,7 @@ class DreamsRepositoryImpl implements DreamsRepository {
         throw Exception('Failed to load dreams');
       }
     } catch (e) {
-      safePrint('Error fetching dreams: $e');
+      debugPrint('Error fetching dreams: $e');
       rethrow;
     }
   }
@@ -109,7 +109,7 @@ class DreamsRepositoryImpl implements DreamsRepository {
         throw Exception('Failed to load friend dreams');
       }
     } catch (e) {
-      safePrint('Error fetching friend dreams: $e');
+      debugPrint('Error fetching friend dreams: $e');
       rethrow;
     }
   }
@@ -120,7 +120,7 @@ class DreamsRepositoryImpl implements DreamsRepository {
       final String apiUrl = '${AppConfig.apiUrl}/dreams/$id';
       await _dio.delete(apiUrl);
     } catch (e) {
-      safePrint('Error deleting dream: $e');
+      debugPrint('Error deleting dream: $e');
       rethrow;
     }
   }
