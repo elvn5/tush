@@ -68,3 +68,15 @@ amplifytools.xcconfig
 
 # Firebase Service Account
 android/app/tush-a80d1-firebase-adminsdk-fbsvc-1e7fec01b1.json
+
+# Android signing
+android/key.properties
+*.jks
+*.keystore
+keystore.b64
+
+# Android build environment (contains signing secrets)
+.env.android
+
+# Docker build output
+build-output/
