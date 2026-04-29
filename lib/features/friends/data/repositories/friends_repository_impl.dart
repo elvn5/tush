@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tush/core/config/app_config.dart';
@@ -46,7 +46,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
         throw Exception('Failed to search users');
       }
     } catch (e) {
-      safePrint('Error searching users: $e');
+      debugPrint('Error searching users: $e');
       rethrow;
     }
   }
@@ -55,12 +55,12 @@ class FriendsRepositoryImpl implements FriendsRepository {
   Future<void> addFriend({required String friendId}) async {
     try {
       final String apiUrl = '${AppConfig.apiUrl}/friends';
-      safePrint('Adding friend with ID: $friendId');
+      debugPrint('Adding friend with ID: $friendId');
       final response = await _dio.post(apiUrl, data: {'friendId': friendId});
-      safePrint('Add friend response status: ${response.statusCode}');
-      safePrint('Add friend response data: ${response.data}');
+      debugPrint('Add friend response status: ${response.statusCode}');
+      debugPrint('Add friend response data: ${response.data}');
     } catch (e) {
-      safePrint('Error adding friend: $e');
+      debugPrint('Error adding friend: $e');
       rethrow;
     }
   }
@@ -95,7 +95,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
         throw Exception('Failed to get friends');
       }
     } catch (e) {
-      safePrint('Error getting friends: $e');
+      debugPrint('Error getting friends: $e');
       rethrow;
     }
   }
@@ -106,7 +106,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
       final String apiUrl = '${AppConfig.apiUrl}/friends/$friendId';
       await _dio.delete(apiUrl);
     } catch (e) {
-      safePrint('Error removing friend: $e');
+      debugPrint('Error removing friend: $e');
       rethrow;
     }
   }

@@ -1,8 +1,10 @@
-import 'package:amplify_flutter/amplify_flutter.dart' hide Emitter;
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../core/services/analytics_service.dart';
+import 'package:tush/core/services/analytics_service.dart';
+import 'package:tush/core/services/token_storage.dart';
 
 part 'auth_bloc.freezed.dart';
 
@@ -23,8 +25,9 @@ class AuthState with _$AuthState {
 @lazySingleton
 class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
   final AnalyticsService _analyticsService;
+  final TokenStorage _tokenStorage;
 
-  AuthBloc(this._analyticsService) : super(const _Initial()) {
+  AuthBloc(this._analyticsService, this._tokenStorage) : super(const _Initial()) {
     on<_CheckRequested>(_onCheckRequested);
     on<_LoginSuccess>(_onLoginSuccess);
     on<_LogoutRequested>(_onLogoutRequested);
@@ -34,14 +37,11 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     _CheckRequested event,
     Emitter<AuthState> emit,
   ) async {
-    try {
-      final session = await Amplify.Auth.fetchAuthSession();
-      if (session.isSignedIn) {
-        emit(const _Authenticated());
-      } else {
-        emit(const _Unauthenticated());
-      }
-    } catch (_) {
+    final token = await _tokenStorage.getToken();
+    if (token != null && !_isTokenExpired(token)) {
+      emit(const _Authenticated());
+    } else {
+      await _tokenStorage.deleteToken();
       emit(const _Unauthenticated());
     }
   }
@@ -54,15 +54,28 @@ class AuthBloc extends HydratedBloc<AuthEvent, AuthState> {
     _LogoutRequested event,
     Emitter<AuthState> emit,
   ) async {
+    await _tokenStorage.deleteToken();
+    await _analyticsService.trackLogout();
+    emit(const _Unauthenticated());
+  }
+
+  bool _isTokenExpired(String token) {
     try {
-      await Amplify.Auth.signOut();
+      final parts = token.split('.');
+      if (parts.length != 3) return true;
 
-      // Track analytics
-      await _analyticsService.trackLogout();
+      final payload = parts[1];
+      final normalized = base64.normalize(payload);
+      final decoded = utf8.decode(base64.decode(normalized));
+      final map = json.decode(decoded) as Map<String, dynamic>;
 
-      emit(const _Unauthenticated());
+      final exp = map['exp'] as int?;
+      if (exp == null) return true;
+
+      return DateTime.fromMillisecondsSinceEpoch(exp * 1000)
+          .isBefore(DateTime.now());
     } catch (_) {
-      emit(const _Unauthenticated());
+      return true;
     }
   }
 
